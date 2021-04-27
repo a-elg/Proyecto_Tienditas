@@ -1,0 +1,22 @@
+{
+  "name": "proyecto_tienditas",
+  "version": "1.0.0",
+  "description": "proyecto para gestar tiendas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/A-ELG/Proyecto_Tienditas.git"
+  },
+  "author": "José Juán Suárez Elizalde, Carlos Huerta García, Samuel Isaías Cano Jiménez, Angel Emmanuel López Gracia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/A-ELG/Proyecto_Tienditas/issues"
+  },
+  "homepage": "https://github.com/A-ELG/Proyecto_Tienditas#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
