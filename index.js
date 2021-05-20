@@ -1,7 +1,8 @@
+require("dotenv").config();
 const fs=require("fs");
 const express=require("express");
 const servidor=express();//nuestro servidor funcionará con express
-servidor.listen(5000);
+servidor.listen(process.env.puerto);
 
 servidor.get("/",(peticion,respuesta)=>{
     console.log("Alguien ingresó a la pag principal");
