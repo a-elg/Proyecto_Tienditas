@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<head>
+    <style type="text/css">
+        body {background-color:rgb(0, 177, 236);}
+        legend{color:white; 
+            font-size: 4vmin; 
+            font-weight: bold;}
+        legend:hover{
+            font-size:5vmin;
+        }
+        td label{color: rgb(255, 255, 255);font-size: 2.25vmin; font-weight: 600;}
+        label{color: rgb(177, 255, 242); font-style: oblique;   }
+        .entrada{background-color: rgb(170, 210, 255); 
+            color: rgb(38, 101, 219);
+            border:none;}
+        .boton{background-color: cornflowerblue; color: rgb(255, 255, 255);font-size: 2vmin;border:none;}
+        select {background-color: rgb(78, 172, 255); color: white; border:none;}
+        .opcion{font-weight: 600; color: rgb(255, 255, 255);font-size: 2vmin;}
+        #c{color: rgb(70, 70, 255);}
+        #cpp{color: rgb(0, 0, 170);}
+        #java{color: rgb(233, 132, 0);}
+        #py{color: rgb(255, 238, 0);}
+        #rb{color: rgb(255, 87, 87);}
+        #pl{color: rgb(255, 193, 245);}
+        #r{color: rgb(145, 67, 31);}
+        #otro{color: rgb(255, 255, 255);}
+        .opcion:hover{font-size: 3vmin;}
+    </style>
+    <script>
+        function consulta_datos(){
+            let mapa=new Map();
+            let txt="";
+            mapa.set("Nombre",document.getElementById("Nombre").value);
+            mapa.set("Apellido Paterno",document.getElementById("Apellido_Paterno").value);
+            mapa.set("Apellido Materno",document.getElementById("Apellido_Materno").value);
+            mapa.set("Calle",document.getElementById("Calle").value);
+            mapa.set("Número",document.getElementById("No").value);
+            mapa.set("Colonia",document.getElementById("Colonia").value);
+            mapa.set("CP",document.getElementById("CP").value);
+            mapa.set("Ciudad",document.getElementById("ciudad").value);
+            mapa.set("Sexo",
+                `${(document.getElementById("sexof").checked)? "Femenino":(
+                    (document.getElementById("sexom").checked)? "Masculino":(
+                        (document.getElementById("sexoo").checked)? "Otro":"Sin definir"
+                    ))}`
+                );
+            mapa.set("Mes de nacimiento",document.getElementById("nacimiento_mes").value);
+            mapa.set("Día de nacimiento",document.getElementById("nacimiento_dia").value);
+            mapa.set("Año de de nacimiento",document.getElementById("nacimiento_annio").value);
+            mapa.set("CURP",document.getElementById("curp").value);
+            mapa.forEach(
+                (val,llav)=>
+                txt=txt.concat(`${llav}:${val}\n`)
+                );
+
+            txt=txt.concat("Lenguajes:");
+            if(document.getElementById("cb_c").checked)
+                txt=txt.concat("\n\tC");
+            if(document.getElementById("cb_rb").checked)
+                txt=txt.concat("\n\tRuby");
+            if(document.getElementById("cb_cpp").checked)
+                txt=txt.concat("\n\tC++");
+            if(document.getElementById("cb_pl").checked)
+                txt=txt.concat("\n\tPerl");
+            if(document.getElementById("cb_java").checked)
+                txt=txt.concat("\n\tJava");
+            if(document.getElementById("cb_r").checked)
+                txt=txt.concat("\n\tR");
+            if(document.getElementById("cb_py").checked)
+                txt=txt.concat("\n\tPython");
+            if(document.getElementById("cb_otro_leng").checked)
+                txt=txt.concat("\n\tOtro");
+
+            txt=txt.concat("\nPasatiempos:");
+            if(document.getElementById("cb_leer").checked)
+                txt=txt.concat("\n\tLeer");
+            if(document.getElementById("cb_videojuegos").checked)
+                txt=txt.concat("\n\tVideojuegos");
+            if(document.getElementById("cb_ver_TV").checked)
+                txt=txt.concat("\n\tVer TV");
+            if(document.getElementById("cb_ir_al_cine").checked)
+                txt=txt.concat("\n\tIr al Cine");
+            if(document.getElementById("cb_navegar_en_internet").checked)
+                txt=txt.concat("\n\tNavegar en Internet");
+            if(document.getElementById("cb_ver_netflix").checked)
+                txt=txt.concat("\n\tVer Netflix");
+            if(document.getElementById("cb_otras_cosas").checked)
+                txt=txt.concat("\n\tOtras Cosas");
+                
+
+
+            txt=txt.concat(`\nComentarios:\n${document.getElementById("entrada").value}`)
+            alert(txt);
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <fieldset><legend>Nombre</legend>
+            <table>
+                <tr>
+                    <td><input id="Nombre" type="text" class="entrada"/></td>
+                    <td><input id="Apellido_Paterno" type="text" class="entrada"/></td>
+                    <td><input id="Apellido_Materno" type="text" class="entrada"/></td>
+                </tr>
+                <tr>
+                    <td><label>Nombre</label></td>
+                    <td><label>Apellido Paterno</label></td>
+                    <td><label>Apellido Materno</label></td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset><legend>Dirección</legend>
+            <table>
+                <tr>
+                    <td><input id="Calle" type="text" class="entrada"/></td>
+                    <td><input id="No" type="text" class="entrada"/></td>
+                    <td><input id="Colonia" type="text" class="entrada"/></td>
+                    <td><input id="CP" type="text" class="entrada"/></td>
+                    <td>
+                        <select id="ciudad">
+                            <option selected disabled>Ciudad</option>
+                            <option>Puebla</option>
+                            <option>Cholula</option>
+                            <option>San Martín</option>
+                            <option>Chignahuapan</option>
+                            <option>Zacatlán</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Calle</label></td>
+                    <td><label>No.</label></td>
+                    <td><label>Colonia</label></td>
+                    <td><label>CP</label></td>
+                    <td><label>Ciudad</label></td>
+                </tr>
+            </table>
+        </fieldset>
+        <p class="opcion">
+        <label>Sexo:</label>
+        <input id="sexom" type="radio" name="sexo"/>Masculino
+        <input id="sexof" type="radio" name="sexo"/>Femenino
+        <input id="sexoo" type="radio" name="sexo"/>Otro
+
+        <br/>
+        <label>Fecha de nacimiento:</label>
+        <select id="nacimiento_mes">
+            <option value="0" selected disabled>Mes</option>
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+        </select>
+        <select id="nacimiento_dia">
+            <option value="0" selected disabled>Día</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <select id="nacimiento_annio">
+            <option value="0" selected disabled>Año</option>
+            <option>2021</option>
+            <option>2020</option>
+            <option>2019</option>
+            <option>2018</option>
+            <option>2017</option>
+            <option>2016</option>
+            <option>2015</option>
+            <option>2014</option>
+            <option>2013</option>
+            <option>2012</option>
+            <option>2011</option>
+            <option>2010</option>
+            <option>2009</option>
+            <option>2008</option>
+            <option>2007</option>
+            <option>2006</option>
+            <option>2005</option>
+            <option>2004</option>
+            <option>2003</option>
+            <option>2002</option>
+            <option>2001</option>
+            <option>2000</option>
+            <option>1999</option>
+            <option>1998</option>
+            <option>1997</option>
+            <option>1996</option>
+            <option>1995</option>
+            <option>1994</option>
+            <option>1993</option>
+            <option>1992</option>
+            <option>1991</option>
+            <option>1990</option>
+            <option>1989</option>
+            <option>1988</option>
+            <option>1987</option>
+            <option>1986</option>
+            <option>1985</option>
+            <option>1984</option>
+            <option>1983</option>
+            <option>1982</option>
+            <option>1981</option>
+            <option>1980</option>
+            <option>1979</option>
+            <option>1978</option>
+            <option>1977</option>
+            <option>1976</option>
+            <option>1975</option>
+            <option>1974</option>
+            <option>1973</option>
+            <option>1972</option>
+            <option>1971</option>
+            <option>1970</option>
+        </select>
+        <br/>
+        <label>CURP:</label>
+        <input id="curp" type="text" class="entrada"/>
+        </p>
+        <fieldset>
+            <legend>Lenguajes de Programación</legend>
+            <table>
+                <tr>
+                    <td class="opcion" id="c"><input id="cb_c" type="checkbox" name="LP" />C</td>
+                    <td class="opcion" id="rb"><input id="cb_rb" type="checkbox" name="LP" />Ruby</td>
+                </tr>
+                <tr>
+                    <td class="opcion" id="cpp"><input id="cb_cpp" type="checkbox" name="LP" />C++</td>
+                    <td class="opcion" id="pl"><input id="cb_pl" type="checkbox" name="LP" />Perl</td>
+                </tr>
+                <tr>
+                    <td class="opcion" id="java"><input id="cb_java" type="checkbox" name="LP" />Java</td>
+                    <td class="opcion" id="r"><input id="cb_r" type="checkbox" name="LP" />R</td>
+                </tr>
+                <tr>
+                    <td class="opcion" id="py"><input id="cb_py" type="checkbox" name="LP" />Python</td>
+                    <td class="opcion" id="otro_leng"><input id="cb_otro_leng" type="checkbox" name="LP" />Otro</td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset><legend>Pasatiempos</legend>
+            <table>
+                <tr>
+                    <td id="leer" class="opcion"><input id="cb_leer" type="checkbox" />Leer</td>
+                    <td id="videojuegos" class="opcion"><input id="cb_videojuegos" type="checkbox" />Videojuegos</td>
+                </tr>
+                <tr>
+                    <td id="ver_TV" class="opcion"><input id="cb_ver_TV" type="checkbox" />Ver TV</td>
+                    <td id="ir_al_cine" class="opcion"><input id="cb_ir_al_cine" type="checkbox" />Ir al Cine</td>
+                    <td id="otras_cosas" class="opcion"><input id="cb_otras_cosas" type="checkbox" />Otras Cosas</td>
+                </tr>
+                <tr>
+                    <td id="navegar_en_internet" class="opcion"><input id="cb_navegar_en_internet" type="checkbox" />Navegar en Internet</td>
+                    <td id="ver_netflix" class="opcion"><input id="cb_ver_netflix" type="checkbox" />Ver Netflix</td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset><legend>Comentarios</legend>
+            <textarea id="entrada"></textarea>
+            <br/>
+            <input type="submit" class="boton" value="Enviar" />
+            <input type="submit" class="boton" value="Borrar" />
+            <input  class="boton" value="Consultar datos" onclick="consulta_datos()"/>
+        </fieldset>
+
+    </form>
+</body>
