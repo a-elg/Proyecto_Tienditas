@@ -1,4 +1,6 @@
-require("dotenv").config();
+require("dotenv").config();//variables de entorno
+
+//const mysql=require("mysql");
 const fs=require("fs");
 const express=require("express");
 const servidor=express();//nuestro servidor funcionará con express
