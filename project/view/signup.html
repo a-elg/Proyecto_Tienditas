@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Aki, la tienda de la esquina donde te encuentras">
+    <meta name="author" content="SICJ, CHG, AELG, JJSE">
+    <link href="styles//bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/signup.css" rel="stylesheet">
+    <link rel = "icon" href="images/logoblanco.png" type="image/png">
+    <script src="tools/bootstrap/bootstrap.bundle.min.js"></script>
+    <title>Regístrate en Aki</title>
+</head>
+
+<body class="text-center">
+
+    <main class="form-signin">
+        <form method="POST" action="signup">
+            <img class="mb-4" src="images/logoblanco.png" alt="" width="72" height="72" style="filter: invert(1);">
+            <h1 class="h3 mb-3 fw-normal">Regístrate en Aki</h1>
+            <h7 class="h7 mb-3 fw-normal">Introduce los datos que se solictan a continuación.</h7><br/><br/>
+            <div class="form-floating">
+                <input type="text" name="text" class="form-control" id="floatingInputn" placeholder="Name" required>
+                <label for="floatingInputn">Nombre</label>
+            </div>
+            <div class="form-floating">
+                <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+                <label for="floatingInput">Correo electrónico</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" name ="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                <label for="floatingPassword">Contraseña</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" name ="vpassword" class="form-control" id="floatingPasswordv" placeholder="Repeat Password" required>
+                <label for="floatingPasswordv">Repetir contraseña</label>
+            </div>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Recuérdame
+                </label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Registrarme</button>
+            <p class="mt-5 mb-3 text-muted">
+                Consulta nuestros <a href="" class="text-black">Términos y Condiciones de Uso</a>
+                y nuestro <a href="" class="text-black">Aviso de Privacidad</a>.
+            </p>
+        </form>
+    </main>
+
+</body>
+
+</html>

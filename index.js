@@ -23,7 +23,7 @@ servidor.post("/usuario",(peticion,respuesta)=>{
     respuesta.end();
 });*/
 
-servidor.post("/usuario",(peticion,respuesta)=>{
+servidor.post("/signin",(peticion,respuesta)=>{
     console.log(peticion.body);
     respuesta.end();
 });
