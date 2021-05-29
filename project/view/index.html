@@ -8,6 +8,7 @@
     <meta name="author" content="SICJ, CHG, AELG, JJSE">
     <link href="styles/bootstrap.min.css" rel="stylesheet">
     <link href="styles/cover.css" rel="stylesheet">
+    <script src="tools/cover.js"></script>
     <title>Aki</title>
 </head>
 
@@ -18,20 +19,48 @@
             <div>
                 <h3 class="float-md-start mb-0">Aki</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
-                    <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                    <a class="nav-link" href="#">Repartidores</a>
-                    <a class="nav-link" href="#">Tiendas</a>
+                    <a class="nav-link active" aria-current="page" id = "home">Inicio</a>
+                    <a class="nav-link" id = "stores">Tiendas</a>
+                    <a class="nav-link" id = "delivery">Repartidores</a>
                 </nav>
             </div>
         </header>
 
-        <main class="px-3">
-            <h1>Aki</h1>
-            <p class="lead">Compra los productos de tu tienda de abarrotes más cercana,
-                puesdes recogerlos en la tienda o a domicilio con uno de nuestros repartidores.
+        <main id="homePage" class="px-3">
+            <h1>Encuentra lo que necesitabas para tu comida, reunión o antojo.</h1>
+            <p class="lead">
+                Compra los productos de tu tienda de abarrotes más cercana y
+                recógelos en la tienda o recíbelos en tu domicilio con uno de nuestros repartidores.
             </p>
             <p class="lead">
-                <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Iniciar sesión</a>
+                <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Ver Catálogo</a>
+            </p>
+        </main>
+
+        <main id="storesPage" class="px-3">
+            <h1>Tiendas</h1>
+            <p class="lead">
+                Ofrece tus productos a más clientes cerca de ti.
+                Lleva el control de tu inventario fácil y sencillo.
+                Obten datos de los productos que más se venden cerca de tu tienda.
+            </p>
+            <p class="lead">
+                <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Regístrate</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Inicia sesión</a>
+            </p>
+        </main>
+
+        <main id="deliveryPage" class="px-3">
+            <h1>Repartidores</h1>
+            <p class="lead">
+                Recibe un ingreso extra repartiendo productos cerca de donde estés.
+                Apoya directamente a una tienda si ya trabajas en ella.
+            </p>
+            <p class="lead">
+                <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Regístrate</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Inicia Sesión</a>
             </p>
         </main>
 
