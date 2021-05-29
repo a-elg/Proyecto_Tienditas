@@ -28,7 +28,20 @@ servidor.post("/signin",(peticion,respuesta)=>{
     respuesta.end();
 });
 
+servidor.post("/signup",(peticion,respuesta)=>{
+  console.log(peticion.body);
+  respuesta.end();
+});
 
+servidor.post("/ssignup",(peticion,respuesta)=>{
+  console.log(peticion.body);
+  respuesta.end();
+});
+
+servidor.post("/dsigninup",(peticion,respuesta)=>{
+  console.log(peticion.body);
+  respuesta.end();
+});
 
 /*
 // create application/json parser
