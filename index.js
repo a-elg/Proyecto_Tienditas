@@ -4,26 +4,30 @@ require("dotenv").config();//variables de entorno
 const fs=require("fs");
 const express=require("express");
 const servidor=express();//nuestro servidor funcionará con express
+const bodyparser=require("body-parser");
+
+servidor.use(bodyparser.urlencoded());//Esto es para indicar que usaremos el bodyp.
 
 servidor.listen(process.env.puerto);
 
 servidor.get("/",(peticion,respuesta)=>{
     console.log("Alguien ingresó a la pag principal");
-    respuesta.write(fs.readFileSync(`./project/view/indice.html`));
+    respuesta.write(fs.readFileSync(`./project/view/index.html`));
     respuesta.end();
 });
 
-servidor.get("/usuario",(peticion,respuesta)=>{
-    console.log("Alguien ingresó a la pag principal");
-    respuesta.write(fs.readFileSync(`./project/view/usuario.html`));
-    respuesta.end();
-});
-
-servidor.post("/",(peticion,respuesta)=>{
+/*
+servidor.post("/usuario",(peticion,respuesta)=>{
     console.log("Alguien ingresó a la pag principal");
     respuesta.write(fs.readFileSync(`./project/view/indice.html`));
     respuesta.end();
+});*/
+
+servidor.post("/usuario",(peticion,respuesta)=>{
+    console.log(peticion.body);
+    respuesta.end();
 });
+
 
 
 /*
