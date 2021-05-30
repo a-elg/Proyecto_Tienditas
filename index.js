@@ -1,66 +1,68 @@
 require("dotenv").config();//variables de entorno
 
-//const mysql=require("mysql");
-const fs=require("fs");
-const express=require("express");
-const servidor=express();//nuestro servidor funcionará con express
-const bodyparser=require("body-parser");
+const mysql=require("mysql");
+const fs = require("fs");
+const express = require("express");
+const app = express();//nuestro servidor funcionará con express
+const bodyparser = require("body-parser");
 
-servidor.use(bodyparser.urlencoded());//Esto es para indicar que usaremos el bodyp.
+let con = mysql.createConnection({
+    user: "root",
+    password:`${process.env.mysql_pw}`,
+    database:"aki"
+});
 
-servidor.listen(process.env.puerto);
+con.connect((err)=>{
+  if(err) throw err;
+  console.log("MySQL server connected");
+  let lit_query=`insert into perros values (10,"Salomon")`;
 
-servidor.use(express.static("./project/view"));
+  con.query(lit_query,(err,result)=>{
+    if(err)throw err;
+    //"INSERT INTO employees (id, name, age, city) VALUES ?";
+    //["1","John Cena", "69", "Mexico"]
+    //con.query(sql, [values], function (err, result
+    console.log(result);
+    console.log(`Result of Query: ${result.affectedRows}`);
+    console.log("Query realizada");
+  });
+});
 
-servidor.get("/",(peticion,respuesta)=>{
+app.use(bodyparser.urlencoded());//Esto es para indicar que usaremos el bodyp.
+app.use(express.static("./project/view"));
+app.listen(process.env.port);
+app.get("/",(request,response)=>{
     console.log("Alguien ingresó a la pag principal");
-    respuesta.write(fs.readFileSync(`./project/view/index.html`));
-    respuesta.end();
+    response.redirect(`./project/view/index.html`);
+    response.end();
 });
 
-/*
-servidor.post("/usuario",(peticion,respuesta)=>{
-    console.log("Alguien ingresó a la pag principal");
-    respuesta.write(fs.readFileSync(`./project/view/indice.html`));
-    respuesta.end();
-});*/
-
-servidor.post("/signin",(peticion,respuesta)=>{
-    console.log(peticion.body);
-    respuesta.end();
+app.post("/signin",(request,response)=>{
+    console.log(request.body);
+    response.end();
 });
 
-servidor.post("/signup",(peticion,respuesta)=>{
-  console.log(peticion.body);
-  respuesta.end();
+app.post("/catalog",(request,response)=>{
+  if(request.headers.referer.includes("http://localhost:5000/home.html")){
+    response.contentType(`text/plain`);
+    response.send('Catalog');
+  }
+  response.end();
 });
 
-servidor.post("/ssignup",(peticion,respuesta)=>{
-  console.log(peticion.body);
-  respuesta.end();
+app.post("/signup",(request,response)=>{
+  console.log(request.body);
+  response.end();
 });
 
-servidor.post("/dsigninup",(peticion,respuesta)=>{
-  console.log(peticion.body);
-  respuesta.end();
+app.post("/ssignup",(request,response)=>{
+  console.log(request.body);
+  response.end();
 });
 
-/*
-// create application/json parser
-var jsonParser = bodyParser.json()
- 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
- 
+app.post("/dsignup",(request,response)=>{
+  console.log(request.body);
+  response.end();
+});
 
-// POST /login gets urlencoded bodies
-app.post('/login', urlencodedParser, function (req, res) {
-  res.send('welcome, ' + req.body.username)
-})
- 
-// POST /api/users gets JSON bodies
-app.post('/api/users', jsonParser, function (req, res) {
-  // create user in req.body
-})
-*/
-console.log("Estoy dentro");
+console.log(`Server up at localhost:${process.env.port}`);

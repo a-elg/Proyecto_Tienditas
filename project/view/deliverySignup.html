@@ -10,13 +10,14 @@
     <link href="styles/signup.css" rel="stylesheet">
     <link rel="icon" href="images/logoblanco.png" type="image/png">
     <script src="tools/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="tools/sign.js"></script>
     <title>Regístrate en Aki</title>
 </head>
 
 <body class="text-center">
 
     <main class="form-signup">
-        <form method="POST" action="dsignup">
+        <form method="POST" id="sign" action="dsignup">
             <img class="mb-4" src="images/logoblanco.png" alt="" width="72" height="72" style="filter: invert(1);">
             <h1 class="h3 mb-3 fw-normal">Regístrate en Aki</h1>
             <h7 class="h7 mb-3 fw-normal">Introduce los datos que se solictan a continuación.</h7><br /><br />
@@ -68,6 +69,9 @@
                         <input type="password" name="vpassword" class="form-control" id="floatingPasswordv"
                             placeholder="Repeat Password" required>
                         <label for="floatingPasswordv">Repetir contraseña</label>
+                        <div class="invalid-feedback">
+                            Las contraseñas no coinciden.
+                        </div>
                     </div>
                 </div>
             </div>
