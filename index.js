@@ -10,6 +10,8 @@ servidor.use(bodyparser.urlencoded());//Esto es para indicar que usaremos el bod
 
 servidor.listen(process.env.puerto);
 
+servidor.use(express.static("./project/view"));
+
 servidor.get("/",(peticion,respuesta)=>{
     console.log("Alguien ingresó a la pag principal");
     respuesta.write(fs.readFileSync(`./project/view/index.html`));
