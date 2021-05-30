@@ -1,10 +1,10 @@
-require("dotenv").config();//variables de entorno
+require("dotenv").config();
 
 const mysql=require("mysql");
 const fs = require("fs");
 const express = require("express");
-const app = express();//nuestro servidor funcionará con express
-const bodyparser = require("body-parser");
+const app = express();
+let connection_ready=false;
 
 let con = mysql.createConnection({
     user: "root",
@@ -15,8 +15,12 @@ let con = mysql.createConnection({
 con.connect((err)=>{
   if(err) throw err;
   console.log("MySQL server connected");
-  let lit_query=`insert into perros values (10,"Salomon")`;
+  connection_ready=true;
+});
 
+function query(lit_query){
+  if(!connection_ready)
+    return null;
   con.query(lit_query,(err,result)=>{
     if(err)throw err;
     //"INSERT INTO employees (id, name, age, city) VALUES ?";
@@ -26,9 +30,10 @@ con.connect((err)=>{
     console.log(`Result of Query: ${result.affectedRows}`);
     console.log("Query realizada");
   });
-});
+}
 
-app.use(bodyparser.urlencoded());//Esto es para indicar que usaremos el bodyp.
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./project/view"));
 app.listen(process.env.port);
 app.get("/",(request,response)=>{
@@ -43,6 +48,7 @@ app.post("/signin",(request,response)=>{
 });
 
 app.post("/catalog",(request,response)=>{
+  console.log(request.body);
   if(request.headers.referer.includes("http://localhost:5000/home.html")){
     response.contentType(`text/plain`);
     response.send('Catalog');
