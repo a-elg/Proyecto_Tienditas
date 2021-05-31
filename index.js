@@ -1,36 +1,9 @@
 require("dotenv").config();
-
-const mysql=require("mysql");
 const fs = require("fs");
 const express = require("express");
+const MySQL=require("./project/mysql_db/controller.js");
 const app = express();
-let connection_ready=false;
 
-let con = mysql.createConnection({
-    user: "root",
-    password:`${process.env.mysql_pw}`,
-    database:"aki"
-});
-
-con.connect((err)=>{
-  if(err) throw err;
-  console.log("MySQL server connected");
-  connection_ready=true;
-});
-
-function query(lit_query){
-  if(!connection_ready)
-    return null;
-  con.query(lit_query,(err,result)=>{
-    if(err)throw err;
-    //"INSERT INTO employees (id, name, age, city) VALUES ?";
-    //["1","John Cena", "69", "Mexico"]
-    //con.query(sql, [values], function (err, result
-    console.log(result);
-    console.log(`Result of Query: ${result.affectedRows}`);
-    console.log("Query realizada");
-  });
-}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -62,12 +35,19 @@ app.post("/signup",(request,response)=>{
 });
 
 app.post("/ssignup",(request,response)=>{
-  console.log(request.body);
+  let info=request.body;
+  console.log(info);
+  if(info.password!==info.vpassword)
+    response.redirect("./project/view/storesSignup.html");
   response.end();
 });
 
 app.post("/dsignup",(request,response)=>{
-  console.log(request.body);
+  let info=request.body;
+  console.log(info);
+  if(info.password!==info.vpassword)
+    response.redirect("./project/view/deliverySignup.html");
+
   response.end();
 });
 
