@@ -9,6 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./project/view"));
 app.listen(process.env.port);
+
 app.get("/",(request,response)=>{
     console.log("Alguien ingresó a la pag principal");
     response.redirect(`./project/view/index.html`);
