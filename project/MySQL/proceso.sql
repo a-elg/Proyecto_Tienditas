@@ -200,3 +200,51 @@ create table review(
     ON UPDATE CASCADE
 );
 
+drop procedure if exists createCustomer;
+delimiter $$
+create procedure createCustomer(
+    in c_email_sp nvarchar(255),
+    in c_name_sp nvarchar(255),
+    in c_phone_sp nvarchar(13),
+    in c_psswd_sp nvarchar(255)
+)
+begin
+	declare created boolean;
+	declare exist int;
+	set exist = (select count(*) from usuariosspaceride where u_contra=u_contra_sp);
+    if(exist = 0)
+		then
+			insert into customers values(c_email_sp, c_name_sp, c_phone_sp, c_psswd_sp);
+      set created = true;
+      select created;
+		else
+      set created = false;
+	end if;
+end$$
+delimiter ;
+drop procedure if exists signinUser;
+delimiter $$
+create procedure signinUser(
+    in u_email_sp nvarchar(255),
+    in u_psswd_sp nvarchar(255)
+)
+begin
+	declare casesignin int;
+	declare name_sp nvarchar(255);
+	set name_sp = (select customers.c_name from customers where c_email = u_email_sp and c_password = u_psswd_sp);
+    if name_sp is null
+		then
+			set name_sp = (select customers.c_name from customers where c_email = u_email_sp);
+      if name_sp is null
+				then
+					set name_sp = "";
+          set casesignin = 0;
+				else
+					set casesignin = 2;
+			end if;
+		else
+			set casesignin = 1;
+	end if;
+    select name_sp, casesignin;
+end$$
+delimiter ;
