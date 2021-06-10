@@ -1,7 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 const express = require("express");
-const MySQL=require("./project/mysql_db/controller.js");
+const MySQL=require("./project/controller/db.js");
 const app = express();
 let connection_ready=false;
 
