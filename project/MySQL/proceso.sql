@@ -326,4 +326,75 @@ begin
     select name_sp, casesignin;
 end$$
 delimiter ;
+drop procedure if exists readCustomer;
+delimiter $$
+create procedure readCustomer(
+    in u_id_sp nvarchar(255)
+)
+begin
+	select * from customers where c_email = u_id_sp;
+end$$
+delimiter ;
+drop procedure if exists readDeliveryMan;
+delimiter $$
+create procedure readDeliveryMan(
+    in u_id_sp nvarchar(255)
+)
+begin
+	select * from delivery_men where dm_email = u_id_sp;
+end$$
+delimiter ;
+drop procedure if exists readSAdmin;
+delimiter $$
+create procedure readSAdmin(
+    in u_id_sp nvarchar(255)
+)
+begin
+	select * from store_admin where sa_email = u_id_sp;
+end$$
+delimiter ;
+drop procedure if exists readAdmin;
+delimiter $$
+create procedure readAdmin(
+    in u_id_sp nvarchar(255)
+)
+begin
+	select * from app_admin where aa_email = u_id_sp;
+end$$
+delimiter ;
+drop procedure if exists updateCustomer;
+delimiter $$
+create procedure updateCustomer(
+    in u_name_sp nvarchar(255),
+    in u_phone_sp nvarchar(13),
+    in u_psswd_sp nvarchar(255),
+    in u_mail_sp nvarchar(255)
+)
+begin
+	declare updated boolean;
+	update customers set c_email = u_mail_sp, c_name = u_name_sp, c_password = u_psswd_sp, c_phone = u_phone_sp where c_email = u_email_sp;
+	set updated = true;
+	select updated;
+end$$
+delimiter ;
 
+SET GLOBAL max_connections = 500;
+SET @@session.block_encryption_mode = 'aes-256-ecb';
+drop procedure if exists encrypt;
+delimiter $$
+create procedure encrypt(
+	in str nvarchar(255)
+)
+begin
+	SELECT HEX(AES_ENCRYPT(str, 'a1k5i9_1327'));
+end$$
+delimiter ;
+drop procedure if exists decryptstr;
+delimiter $$
+create procedure decryptstr(
+	in encrypted blob
+)
+begin
+	SELECT AES_DECRYPT(UNHEX(encrypted),'spaceride_1327');
+end$$
+delimiter ;
