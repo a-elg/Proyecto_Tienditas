@@ -372,12 +372,88 @@ create procedure updateCustomer(
 )
 begin
 	declare updated boolean;
-	update customers set c_email = u_mail_sp, c_name = u_name_sp, c_password = u_psswd_sp, c_phone = u_phone_sp where c_email = u_email_sp;
-	set updated = true;
+  declare name_sp nvarchar(255);
+  set name_sp = (select customers.c_name from customers where c_email = u_mail_sp);
+      if name_sp is null
+				then
+					set name_sp = "";
+          set updated = false;
+				else
+          update customers set c_email = u_mail_sp, c_name = u_name_sp, c_password = u_psswd_sp, c_phone = u_phone_sp where c_email = u_email_sp;
+					set updated = true;
+			end if;
 	select updated;
 end$$
 delimiter ;
-
+drop procedure if exists updateDeliveryMan;
+delimiter $$
+create procedure updateDeliveryMan(
+    in u_name_sp nvarchar(255),
+    in u_phone_sp nvarchar(13),
+    in u_psswd_sp nvarchar(255),
+    in u_mail_sp nvarchar(255)
+)
+begin
+	declare updated boolean;
+  declare name_sp nvarchar(255);
+  set name_sp = (select delivery_men.dm_name from delivery_men where dm_email = u_mail_sp);
+      if name_sp is null
+				then
+					set name_sp = "";
+          set updated = false;
+				else
+          update delivery_men set dm_email = u_mail_sp, dm_name = u_name_sp, dm_password = u_psswd_sp, dm_phone = u_phone_sp where dm_email = u_email_sp;
+					set updated = true;
+			end if;
+	select updated;
+end$$
+delimiter ;
+drop procedure if exists updateAdmin;
+delimiter $$
+create procedure updateAdmin(
+    in u_name_sp nvarchar(255),
+    in u_psswd_sp nvarchar(255),
+    in u_mail_sp nvarchar(255),
+    in aa_gain_sp int unsigned
+)
+begin
+	declare updated boolean;
+  declare name_sp nvarchar(255);
+  set name_sp = (select app_admin.aa_name from app_admin where aa_email = u_mail_sp);
+      if name_sp is null
+				then
+					set name_sp = "";
+          set updated = false;
+				else
+          update app_admin set aa_email = u_mail_sp, aa_name = u_name_sp, aa_password = u_psswd_sp, aa_gain = aa_gain_sp where aa_email = u_mail_sp;
+					set updated = true;
+			end if;
+	select updated;
+end$$
+delimiter ;
+drop procedure if exists updateSAdmin;
+delimiter $$
+create procedure updateSAdmin(
+    in u_name_sp nvarchar(255),
+    in u_phone_sp nvarchar(13),
+    in u_psswd_sp nvarchar(255),
+    in u_mail_sp nvarchar(255)
+)
+begin
+	declare updated boolean;
+  declare name_sp nvarchar(255);
+  set name_sp = (select store_admin.sa_email from store_admin where sa_email = u_mail_sp);
+      if name_sp is null
+				then
+					set name_sp = "";
+          set updated = false;
+				else
+          update store_admin set sa_email = u_mail_sp, sa_name = u_name_sp, sa_password = u_psswd_sp, sa_phone = u_phone_sp where sa_email = u_email_sp;
+					set updated = true;
+			end if;
+	select updated;
+end$$
+delimiter ;
 SET GLOBAL max_connections = 500;
 SET @@session.block_encryption_mode = 'aes-256-ecb';
 drop procedure if exists encrypt;
