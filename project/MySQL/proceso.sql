@@ -5,7 +5,7 @@ create table app_admin(
   aa_email varchar(255) not null,
   aa_name varchar(255) not null,
   aa_gain int unsigned not null,
-  
+  aa_password varchar(255) not null,
   primary key (aa_email)
 );
 
@@ -222,9 +222,9 @@ begin
 	end if;
 end$$
 delimiter ;
-drop procedure if exists signinUser;
+drop procedure if exists signinCustomer;
 delimiter $$
-create procedure signinUser(
+create procedure signinCustomer(
     in u_email_sp nvarchar(255),
     in u_psswd_sp nvarchar(255)
 )
@@ -248,3 +248,82 @@ begin
     select name_sp, casesignin;
 end$$
 delimiter ;
+drop procedure if exists signinStore;
+delimiter $$
+create procedure signinStore(
+    in u_email_sp nvarchar(255),
+    in u_psswd_sp nvarchar(255)
+)
+begin
+	declare casesignin int;
+	declare name_sp nvarchar(255);
+	set name_sp = (select store_admin.sa_name from store_admin where sa_email = u_email_sp and sa_password = u_psswd_sp);
+    if name_sp is null
+		then
+			set name_sp = (select store_admin.sa_name from store_admin where sa_email = u_email_sp);
+      if name_sp is null
+				then
+					set name_sp = "";
+          set casesignin = 0;
+				else
+					set casesignin = 2;
+			end if;
+		else
+			set casesignin = 1;
+	end if;
+    select name_sp, casesignin;
+end$$
+delimiter ;
+drop procedure if exists signinDelivery;
+delimiter $$
+create procedure signinDelivery(
+    in u_email_sp nvarchar(255),
+    in u_psswd_sp nvarchar(255)
+)
+begin
+	declare casesignin int;
+	declare name_sp nvarchar(255);
+	set name_sp = (select delivery_men.dm_name from delivery_men where dm_email = u_email_sp and dm_password = u_psswd_sp);
+    if name_sp is null
+		then
+			set name_sp = (select delivery_men.sa_name from delivery_men where dm_email = u_email_sp);
+      if name_sp is null
+				then
+					set name_sp = "";
+          set casesignin = 0;
+				else
+					set casesignin = 2;
+			end if;
+		else
+			set casesignin = 1;
+	end if;
+    select name_sp, casesignin;
+end$$
+delimiter ;
+drop procedure if exists signinAdmin;
+delimiter $$
+create procedure signinAdmin(
+    in u_email_sp nvarchar(255),
+    in u_psswd_sp nvarchar(255)
+)
+begin
+	declare casesignin int;
+	declare name_sp nvarchar(255);
+	set name_sp = (select app_admin.aa_name from app_admin where aa_email = u_email_sp and aa_password = u_psswd_sp);
+    if name_sp is null
+		then
+			set name_sp = (select app_admin.aa_name from app_admin where aa_email = u_email_sp);
+      if name_sp is null
+				then
+					set name_sp = "";
+          set casesignin = 0;
+				else
+					set casesignin = 2;
+			end if;
+		else
+			set casesignin = 1;
+	end if;
+    select name_sp, casesignin;
+end$$
+delimiter ;
+
