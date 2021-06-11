@@ -34,7 +34,6 @@ app.use(express.static("./project/view"));
 app.listen(process.env.port);
 
 app.get("/",(request,response)=>{
-    console.log("Alguien ingresó a la pag principal");
     response.redirect(`./project/view/index.html`);
     response.end();
 });
@@ -42,6 +41,21 @@ app.get("/",(request,response)=>{
 app.post("/signin",(request,response)=>{
     console.log(request.body);
     response.end();
+});
+
+app.post("/ssignin",(request,response)=>{
+  console.log(request.body);
+  response.end();
+});
+
+app.post("/asignin",(request,response)=>{
+  console.log(request.body);
+  response.end();
+});
+
+app.post("/ssignin",(request,response)=>{
+  console.log(request.body);
+  response.end();
 });
 
 app.post("/catalog",(request,response)=>{
