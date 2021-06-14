@@ -2,49 +2,49 @@ create database aki;
 use aki; 
 
 create table app_admin(
-  aa_email varchar(255) not null,
-  aa_name varchar(255) not null,
+  aa_email nvarchar(255) not null,
+  aa_name nvarchar(255) not null,
   aa_gain int unsigned not null,
-  aa_password varchar(255) not null,
+  aa_password nvarchar(255) not null,
   primary key (aa_email)
 );
 
 create table customers(
-  c_email varchar(255) not null,
-  c_name varchar(255) not null,
-  c_phone varchar (13) not null,
-  c_password varchar(255) not null,
+  c_email nvarchar(255) not null,
+  c_name nvarchar(255) not null,
+  c_phone nvarchar (13) not null,
+  c_password nvarchar(255) not null,
   primary key (c_email)
 );
 
 create table delivery_men(
-  dm_email varchar (255) not null,
-  dm_name varchar (255) not null,
-  dm_phone varchar (13) not null,
-  dm_password varchar (255) not null,
-  dm_rfc varchar(10) not null,
+  dm_email nvarchar (255) not null,
+  dm_name nvarchar (255) not null,
+  dm_phone nvarchar (13) not null,
+  dm_password nvarchar (255) not null,
+  dm_rfc nvarchar(10) not null,
 
   primary key (dm_email)
 );
 
 create table store_admin(
-  sa_email varchar(255) not null,
-  sa_name varchar(255) not null,
-  sa_phone varchar(13) not null,
-  sa_password varchar(255) not null,
-  sa_rfc varchar(10) not null,
+  sa_email nvarchar(255) not null,
+  sa_name nvarchar(255) not null,
+  sa_phone nvarchar(13) not null,
+  sa_password nvarchar(255) not null,
+  sa_rfc nvarchar(10) not null,
   
   primary key (sa_email)
 );
 
 create table products(
   p_id int unsigned not null auto_increment,
-  p_name varchar(255) not null,
+  p_name nvarchar(255) not null,
   p_price int unsigned not null,
-  p_brand varchar(255),
-  p_category varchar(255) not null,
+  p_brand nvarchar(255),
+  p_category nvarchar(255) not null,
   p_img_path nvarchar(255),
-  p_description varchar(255),
+  p_description nvarchar(255),
   
   primary key (p_id)
 );
@@ -72,12 +72,12 @@ create table inventories(
 
 create table stores(
   s_id int unsigned not null auto_increment,  
-  sa_email varchar (13),
+  sa_email nvarchar (13),
   i_id int unsigned,
   hc_id int unsigned,
-  s_address varchar(255) not null,
-  s_phone varchar(13) not null,
-  s_schedule varchar(255) not null,
+  s_address nvarchar(255) not null,
+  s_phone nvarchar(13) not null,
+  s_schedule nvarchar(255) not null,
 
   primary key (s_id),
 
@@ -102,11 +102,11 @@ create table stores(
 
 create table orders(
   o_id int unsigned not null auto_increment,
-  dm_email varchar (255),
+  dm_email nvarchar (255),
   o_date date not null,
   o_status tinyint unsigned not null,
   o_cost int unsigned not null,
-  o_delivery_address varchar (255) not null,
+  o_delivery_address nvarchar (255) not null,
 
   primary key (o_id),
 
@@ -118,7 +118,7 @@ create table orders(
 );
 
 create table shopping_carts(
-  c_email varchar (255),
+  c_email nvarchar (255),
   p_id int unsigned,
   sc_addition_date date not null,
   sc_quantity int unsigned not null,
@@ -137,7 +137,7 @@ create table shopping_carts(
 );
 
 create table orders_histories(
-  c_email varchar (255),
+  c_email nvarchar (255),
   o_id int unsigned,
 
   constraint fk_oh_c
@@ -154,7 +154,7 @@ create table orders_histories(
 );
 
 create table balance(
-  dm_email varchar (255),
+  dm_email nvarchar (255),
   o_id int unsigned,
   b_gain int unsigned not null,
 
@@ -192,7 +192,7 @@ create table ordered_products(
 create table review(
   p_id int unsigned,
   r_grade tinyint unsigned not null,
-  r_opinon varchar(255),
+  r_opinon nvarchar(255),
 
   constraint fk_r_p
     foreign key(p_id) 
@@ -216,17 +216,20 @@ create procedure createCustomer(
 begin
 	declare created boolean;
 	declare exist int;
-	set exist = (select count(*) from usuariosspaceride where u_contra=u_contra_sp);
+	set exist = (select count(*) from customers where u_contra=u_contra_sp);
     if(exist = 0)
 		then
 			insert into customers values(c_email_sp, c_name_sp, c_phone_sp, c_psswd_sp);
       set created = true;
-      select created;
 		else
       set created = false;
 	end if;
+  select created;
 end$$
 delimiter ;
+
+
+
 drop procedure if exists signinCustomer;
 delimiter $$
 create procedure signinCustomer(
@@ -253,6 +256,10 @@ begin
     select name_sp, casesignin;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists signinStore;
 delimiter $$
 create procedure signinStore(
@@ -279,6 +286,10 @@ begin
     select name_sp, casesignin;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists signinDelivery;
 delimiter $$
 create procedure signinDelivery(
@@ -305,6 +316,10 @@ begin
     select name_sp, casesignin;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists signinAdmin;
 delimiter $$
 create procedure signinAdmin(
@@ -331,6 +346,10 @@ begin
     select name_sp, casesignin;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists readCustomer;
 delimiter $$
 create procedure readCustomer(
@@ -340,6 +359,10 @@ begin
 	select * from customers where c_email = u_id_sp;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists readDeliveryMan;
 delimiter $$
 create procedure readDeliveryMan(
@@ -349,6 +372,10 @@ begin
 	select * from delivery_men where dm_email = u_id_sp;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists readSAdmin;
 delimiter $$
 create procedure readSAdmin(
@@ -358,6 +385,10 @@ begin
 	select * from store_admin where sa_email = u_id_sp;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists readAdmin;
 delimiter $$
 create procedure readAdmin(
@@ -367,6 +398,10 @@ begin
 	select * from app_admin where aa_email = u_id_sp;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists updateCustomer;
 delimiter $$
 create procedure updateCustomer(
@@ -390,6 +425,10 @@ begin
 	select updated;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists updateDeliveryMan;
 delimiter $$
 create procedure updateDeliveryMan(
@@ -413,6 +452,10 @@ begin
 	select updated;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists updateAdmin;
 delimiter $$
 create procedure updateAdmin(
@@ -436,6 +479,10 @@ begin
 	select updated;
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists updateSAdmin;
 delimiter $$
 create procedure updateSAdmin(
@@ -459,6 +506,10 @@ begin
 	select updated;
 end$$
 delimiter ;
+
+
+
+
 SET GLOBAL max_connections = 500;
 SET @@session.block_encryption_mode = 'aes-256-ecb';
 drop procedure if exists encrypt;
@@ -470,6 +521,10 @@ begin
 	SELECT HEX(AES_ENCRYPT(str, 'a1k5i9_1327'));
 end$$
 delimiter ;
+
+
+
+
 drop procedure if exists decryptstr;
 delimiter $$
 create procedure decryptstr(

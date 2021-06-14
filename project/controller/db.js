@@ -30,7 +30,20 @@ function query(lit_query){
 }module.exports.query=query;
 
 function SaveUser(){
-    
+    try {
+        connection.connect((err)=>{
+            if(err) throw err;
+            connection.query(lit_query,(err,result)=>{
+                if(err) throw err;
+                console.log(`Affected Rows: ${result.affectedRows}`);
+                console.log(`Result:`);
+                console.log(result);
+            });
+        });
+    } catch (error) {
+        console.log("Error:");
+        console.log(error);
+    }   
 }
 
 
