@@ -53,11 +53,6 @@ app.post("/asignin",(request,response)=>{
   response.end();
 });
 
-app.post("/ssignin",(request,response)=>{
-  console.log(request.body);
-  response.end();
-});
-
 app.post("/catalog",(request,response)=>{
   console.log(request.body);
   if(request.headers.referer.includes("http://localhost:5000/home.html")){

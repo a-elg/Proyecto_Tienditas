@@ -28,3 +28,9 @@ function query(lit_query){
         console.log(error);
     }   
 }module.exports.query=query;
+
+function SaveUser(){
+    
+}
+
+
