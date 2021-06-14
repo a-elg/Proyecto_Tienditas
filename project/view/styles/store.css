@@ -108,6 +108,16 @@ body {
     }
 }
 
+.fInput,
+input[type="file"],
+input[type="file"]::-webkit-file-upload-button {
+    height: calc(3.5rem + 2px);
+}
+
+.fInput {
+    padding: 1rem .75rem;
+}
+
 #dashboard,
 #dashboardLinks,
 #orders,

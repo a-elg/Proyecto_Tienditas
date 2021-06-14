@@ -79,6 +79,7 @@ function showTabs(i) {
             document.getElementById("deliveryMen").style.display = "none";
             break;
     }
+    document.getElementById("sidebarMenu").classList.remove("show");
 }
 
 function chartFn() {

@@ -43,6 +43,7 @@ create table products(
   p_price int unsigned not null,
   p_brand varchar(255),
   p_category varchar(255) not null,
+  p_img_path nvarchar(255),
   p_description varchar(255),
   
   primary key (p_id)

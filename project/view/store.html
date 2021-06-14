@@ -22,10 +22,10 @@
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-dark w-100" type="text" placeholder="Buscar" aria-label="Buscar">
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-                <a class="nav-link" href="#">Sign out</a>
+                <a class="nav-link" href="#">Cerrar sesión</a>
             </li>
         </ul>
     </header>
@@ -150,7 +150,94 @@
 
             </main>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 products" id="products">
-
+                <br/><br/>
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                            Añadir un producto al catálogo
+                        </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <br/>
+                                <h1 class="h3 mb-3 fw-normal">Añadir un producto al catálogo de tu tienda en Aki</h1>
+                                <h7 class="h7 mb-3 fw-normal">Introduce la información del producto que se solicta a continuación.</h7><br/><br/>
+                                <form id="cproduct" method="POST" action="cproduct">
+                                    <div class="row g-3">
+                                        <div class="col-sm-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="name" class="form-control" id="floatingInputn" placeholder="Nombre" required>
+                                                <label for="floatingInputn">Nombre</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="input-group mb-3">
+                                                <label class="input-group-text fInput" for="inputGroupFile">Imagen</label>
+                                                <input type="file" class="form-control" name="image" id="inputGroupFile" placeholder="Seleccionar Archivo" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text fInput">$</span>
+                                                <span class="input-group-text fInput">0.00</span>
+                                                <input type="number" name="price" class="form-control" aria-label="Cantiadad (con punto y dos decimales)" placeholder="Precio" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-floating">
+                                                <input type="text" name="brand" class="form-control" id="floatingInputb" placeholder="Marca" required>
+                                                <label for="floatingInputb">Marca</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-floating">
+                                                <input type="text" name="cat" class="form-control" id="floatingInputr" placeholder="Categoría" required>
+                                                <label for="floatingInputr">Categoría</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" name="desc" placeholder="Describe las características más relevantes del producto" id="floatingTextarea2" style="height: 100px"></textarea>
+                                                <label for="floatingTextarea2">Descripción</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Añadir producto</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                Agregar existencias
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                            <div class="accordion-body">
+                                <br/>
+                                <h1 class="h3 mb-3 fw-normal">Agregar existencias de un producto en el catálogo de tu tienda en Aki</h1>
+                                <h7 class="h7 mb-3 fw-normal">Introduce la nueva cantidad de existencias del producto.</h7><br/><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                                Retirar un producto del catálogo
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                            <div class="accordion-body">
+                                <br/>
+                                <h1 class="h3 mb-3 fw-normal">Retirar un producto del catálogo de tu tienda en Aki</h1>
+                                <h7 class="h7 mb-3 fw-normal">Busca el producto a eliminar del catálogo.</h7><br/><br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 clients" id="clients">
 
