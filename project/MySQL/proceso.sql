@@ -203,8 +203,6 @@ create table review(
 
 
 
-
-
 drop procedure if exists createCustomer;
 delimiter $$
 create procedure createCustomer(
@@ -227,8 +225,6 @@ begin
   select created;
 end$$
 delimiter ;
-
-
 
 drop procedure if exists signinCustomer;
 delimiter $$
@@ -257,9 +253,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 drop procedure if exists signinStore;
 delimiter $$
 create procedure signinStore(
@@ -286,9 +279,6 @@ begin
     select name_sp, casesignin;
 end$$
 delimiter ;
-
-
-
 
 drop procedure if exists signinDelivery;
 delimiter $$
@@ -317,9 +307,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 drop procedure if exists signinAdmin;
 delimiter $$
 create procedure signinAdmin(
@@ -347,9 +334,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 drop procedure if exists readCustomer;
 delimiter $$
 create procedure readCustomer(
@@ -359,9 +343,6 @@ begin
 	select * from customers where c_email = u_id_sp;
 end$$
 delimiter ;
-
-
-
 
 drop procedure if exists readDeliveryMan;
 delimiter $$
@@ -373,9 +354,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 drop procedure if exists readSAdmin;
 delimiter $$
 create procedure readSAdmin(
@@ -386,9 +364,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 drop procedure if exists readAdmin;
 delimiter $$
 create procedure readAdmin(
@@ -398,9 +373,6 @@ begin
 	select * from app_admin where aa_email = u_id_sp;
 end$$
 delimiter ;
-
-
-
 
 drop procedure if exists updateCustomer;
 delimiter $$
@@ -426,9 +398,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 drop procedure if exists updateDeliveryMan;
 delimiter $$
 create procedure updateDeliveryMan(
@@ -452,9 +421,6 @@ begin
 	select updated;
 end$$
 delimiter ;
-
-
-
 
 drop procedure if exists updateAdmin;
 delimiter $$
@@ -480,9 +446,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 drop procedure if exists updateSAdmin;
 delimiter $$
 create procedure updateSAdmin(
@@ -507,9 +470,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 SET GLOBAL max_connections = 500;
 SET @@session.block_encryption_mode = 'aes-256-ecb';
 drop procedure if exists encrypt;
@@ -521,9 +481,6 @@ begin
 	SELECT HEX(AES_ENCRYPT(str, 'a1k5i9_1327'));
 end$$
 delimiter ;
-
-
-
 
 drop procedure if exists decryptstr;
 delimiter $$

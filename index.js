@@ -38,35 +38,27 @@ app.get("/",(request,response)=>{
     response.end();
 });
 
+//Customer_______________________________________________________________
+app.post("/signup",(request,response)=>{
+  let info =request.body;
+  if(info.password!==info.vpassword)
+    response.redirect("./project/view/deliverySignup.html");
+  else
+    MySQL.saveCustomer(info.email,info.name,info.phone,info.password);
+  response.end();
+});
+
 app.post("/signin",(request,response)=>{
-    console.log(request.body);
+    if(MySQL.signinCustomer(request.body.email,request.body.password)){
+      //Correct signin
+    }
+    else{
+      //Signin error
+    }
     response.end();
 });
 
-app.post("/ssignin",(request,response)=>{
-  console.log(request.body);
-  response.end();
-});
-
-app.post("/asignin",(request,response)=>{
-  console.log(request.body);
-  response.end();
-});
-
-app.post("/catalog",(request,response)=>{
-  console.log(request.body);
-  if(request.headers.referer.includes("http://localhost:5000/home.html")){
-    response.contentType(`text/plain`);
-    response.send('Catalog');
-  }
-  response.end();
-});
-
-app.post("/signup",(request,response)=>{
-  console.log(request.body);
-  response.end();
-});
-
+//Store____________________________________________________________________
 app.post("/ssignup",(request,response)=>{
   let info=request.body;
   console.log(info);
@@ -75,6 +67,12 @@ app.post("/ssignup",(request,response)=>{
   response.end();
 });
 
+app.post("/ssignin",(request,response)=>{
+  console.log(request.body);
+  response.end();
+});
+
+//Deliverer________________________________________________________________
 app.post("/dsignup",(request,response)=>{
   let info=request.body;
   console.log(info);
@@ -84,4 +82,36 @@ app.post("/dsignup",(request,response)=>{
   response.end();
 });
 
+app.post("/dsignin",(request,response)=>{
+  let info=request.body;
+
+  response.end();
+});
+
+
+//Admin____________________________________________________________________
+app.post("/asignup",(request,response)=>{
+  console.log(request.body);
+  response.end();
+});
+
+app.post("/asignin",(request,response)=>{
+  console.log(request.body);
+  response.end();
+});
+
+//Operations_______________________________________________________________
+app.post("/catalog",(request,response)=>{
+  console.log(request.body);
+  if(request.headers.referer.includes("http://localhost:5000/home.html")){
+    response.contentType(`text/plain`);
+    response.send('Catalog');
+  }
+  response.end();
+});
+
+
+
+
 console.log(`Server up at localhost:${process.env.port}`);
+//MySQL.query("call signinCustomer('correo2','contrass');");
