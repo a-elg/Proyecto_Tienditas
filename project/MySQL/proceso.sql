@@ -216,7 +216,7 @@ create procedure createCustomer(
 begin
 	declare created boolean;
 	declare exist int;
-	set exist = (select count(*) from customers where c_password=u_contra_sp);
+	set exist = (select count(*) from customers where c_password=c_psswd_sp);
     if(exist = 0)
 		then
 			insert into customers values(c_email_sp, c_name_sp, c_phone_sp, c_psswd_sp);
