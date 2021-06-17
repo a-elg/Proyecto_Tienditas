@@ -23,7 +23,6 @@ create table delivery_men(
   dm_phone nvarchar (13) not null,
   dm_password nvarchar (255) not null,
   dm_rfc nvarchar(10) not null,
-
   primary key (dm_email)
 );
 
@@ -45,7 +44,7 @@ create table products(
   p_category nvarchar(255) not null,
   p_img_path nvarchar(255),
   p_description nvarchar(255),
-  
+
   primary key (p_id)
 );
 
@@ -491,3 +490,52 @@ begin
 	SELECT AES_DECRYPT(UNHEX(encrypted),'spaceride_1327');
 end$$
 delimiter ;
+
+-- app admin
+insert into app_admin values('psan@mail.com', 'Pedro Sanchez', '777', 'psan123');
+insert into app_admin values('mmej@mail.com', 'Monica Mejia', '200', 'mmej321');
+insert into app_admin values('rgra@mail.com', 'Roberto Gracia', '1023', 'rgra666');
+insert into app_admin values('rrr@mail.com', 'Roberto Ramires Rocha', '10200', 'DieguitoMaradona');
+
+-- customers
+insert into customers values('mrbuyer@mail.com', 'Rigoberto Guardado', '525549302112', 'mcdinerox3');
+insert into customers values('mcqueenrayo@mail.com', 'Marcelo Reina', '525538382972', '12345jeje');
+insert into customers values('licpugberto@mail.com', 'Alberto Del Rio Sanchez', '525538382975', 'vivalospug5');
+insert into customers values('almonez@mail.com', 'Alex Montes Gomez', '525538382932', '312452jjdks1');
+
+--PENDIENTE
+-- delivery_men
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- store_admin
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- products
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- health_certificate
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- inventories
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- stores
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- orders
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- shopping_carts
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- orders_histories
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- balance
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- ordered_products
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+
+-- review
+insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');

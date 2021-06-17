@@ -16,6 +16,7 @@ const express = require("express");
 //const MySQL = require("./project/controller/db.js");
 const app = express();
 let connection_ready = false;
+const mysql = require("./project/controller/db.js");
 
 /*let con = mysql.createConnection({
     user: "root",
@@ -126,4 +127,5 @@ app.post("/catalog", (request, response) => {
 
 
 console.log(`Server up at localhost:${process.env.port}`);
+mysql.query(`call readCustomer('coorep')`);
 //MySQL.query("call signinCustomer('correo2','contrass');");
