@@ -1,3 +1,15 @@
+/**Cosas por hacer
+ * Controladores para cada posible operación en MYSQL
+ * API imgdb
+ * Añadir páginas de no se encuentra/oops
+ * Mantener sesión iniciada para usuarios
+ * Alaterar base de datos para la API
+ * Llenar la base de datos
+ * Sign in/ sing up de Customer
+ * Discutir lo del Stock
+ * 
+ */
+
 require("dotenv").config();
 const fs = require("fs");
 const express = require("express");

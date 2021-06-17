@@ -27,7 +27,6 @@ function query(lit_query){
     }   
 }module.exports.query=query;
 
-
 // Save user________________________________________________________________________________________________________________
 function saveCustomer(email,name,phone,password){
     try {
@@ -146,11 +145,37 @@ function getShoppingCart(email){
     let query_result=query(`select * from shopping_carts where c_mail=${email};`);
 }
 
+function createProduct(name,price,brand,category,img_path,description){
+    let query_result;
+    if (brand===undefined){
+        query_result=query(`insert into products
+            (
+                p_name,
+                p_price,
+                p_brand,
+                p_category,
+                p_img_path,
+                p_description
+            ) values 
+            (
+                '${}',
+                ${},
+                '${}',
+                '${}',
+                '${}',
+                '${}'
+            );
+        `);
+    }
+    else{
+
+    }  
+}
 
 console.log("db.js correctly set");
 
-
-
+//insert into products (p_name,p_price,p_brand,p_category,p_img_path,p_description) values ('Paracetamol',40,'Similares','Salud','https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/4-Nitrophenol_acsv.svg/1920px-4-Nitrophenol_acsv.svg.png','Caja de paracetamol de 10 tabletas de 20gr cada una.');
+//https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/4-Nitrophenol_acsv.svg/1920px-4-Nitrophenol_acsv.svg.png
 
 
 
