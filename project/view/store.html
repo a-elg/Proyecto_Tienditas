@@ -219,7 +219,33 @@
                             <div class="accordion-body">
                                 <br/>
                                 <h1 class="h3 mb-3 fw-normal">Agregar existencias de un producto en el catálogo de tu tienda en Aki</h1>
-                                <h7 class="h7 mb-3 fw-normal">Introduce la nueva cantidad de existencias del producto.</h7><br/><br/>
+                                <h7 class="h7 mb-3 fw-normal">Busca el producto a actualizar en el catálogo</h7><br/><br/>
+                                <form id="sproduct" method="POST" action="sproduct">
+                                    <div class="row g-3">
+                                        <div class="col-sm-12">
+                                            <div class="form-floating">
+                                                <input type="text" name="name" class="form-control" id="floatingInputns" placeholder="Nombre" required>
+                                                <label for="floatingInputns">Nombre</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Buscar producto</button>
+                                </form>
+                                <br/><br/>
+                                <form id="uproduct" method="POST" action="uproduct">
+                                    <h7 class="h7 mb-3 fw-normal">Introduce la nueva cantidad de existencias del producto.</h7><br/><br/>
+                                    <div class="row g-3">
+                                        <div class="col-sm-12">
+                                            <div class="form-floating">
+                                                <input type="number" name="qntt" class="form-control" id="floatingInputq" placeholder="Cantidad" required>
+                                                <label for="floatingInputq">Cantidad</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Actualizar existencias</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -234,6 +260,22 @@
                                 <br/>
                                 <h1 class="h3 mb-3 fw-normal">Retirar un producto del catálogo de tu tienda en Aki</h1>
                                 <h7 class="h7 mb-3 fw-normal">Busca el producto a eliminar del catálogo.</h7><br/><br/>
+                                <form id="sproduct2" method="POST" action="sproduct">
+                                    <div class="row g-3">
+                                        <div class="col-sm-12">
+                                            <div class="form-floating">
+                                                <input type="text" name="name" class="form-control" id="floatingInputn" placeholder="Nombre" required>
+                                                <label for="floatingInputn">Nombre</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Buscar producto</button>
+                                </form>
+                                <br/><br/>
+                                <form id="dproduct" method="POST" action="dproduct">
+                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Eliminar producto</button>
+                                </form>
                             </div>
                         </div>
                     </div>
