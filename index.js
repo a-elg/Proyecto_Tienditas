@@ -46,11 +46,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./project/view"));
 app.listen(process.env.port);
 
-app.get("/", (request, response) => {
-    response.redirect(`./project/view/index.html`);
-    response.end();
-});
-
 //Customer_______________________________________________________________
 app.post("/signup", (request, response) => {
     let info = request.body;
@@ -123,7 +118,7 @@ app.post("/catalog", (request, response) => {
     response.end();
 });
 
-
+//Error handling____________________________________________________________
 
 
 console.log(`Server up at localhost:${process.env.port}`);
