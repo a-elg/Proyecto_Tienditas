@@ -13,7 +13,7 @@ Then you will need to start the service
 mysqld --console --datadir=B
 
 Try openning the client in another command prompt
-mysql -u root -p
+mysql -u root -p dHU60nHW#0ei
 
 and write the password previously saved.
 Once done, write the next line

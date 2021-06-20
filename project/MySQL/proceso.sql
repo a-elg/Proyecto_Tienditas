@@ -56,19 +56,15 @@ create table health_certificate(
 );
 
 create table inventories(
-  s_id int unsigned,
+  i_id int unsigned,
   p_id int unsigned,
   i_quantity int unsigned not null,
+
+  primary key (i_id),
 
   constraint fk_i_p
     foreign key(p_id) 
     references products(p_id)
-    ON DELETE CASCADE  
-    ON UPDATE CASCADE
-  
-  constraint fk_s_id
-    foreign key(s_id) 
-    references stores(s_id)
     ON DELETE CASCADE  
     ON UPDATE CASCADE
 );
@@ -179,7 +175,6 @@ create table ordered_products(
   o_id int unsigned,
   s_id int unsigned,
   op_quantity int unsigned not null,
-  s_id int unsigned not null,
 
   constraint fk__op_p
     foreign key(p_id) 
@@ -197,7 +192,7 @@ create table ordered_products(
     foreign key(s_id) 
     references stores(s_id)
     ON DELETE CASCADE  
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE,
 
   constraint fk__op_s
     foreign key(s_id) 
@@ -510,140 +505,148 @@ end$$
 delimiter ;
 
 -- app admin -> aa_email 255, aa_name 255, aa_gain uint, aa_password 255,
-insert into app_admin values('psan@mail.com', 'Pedro Sanchez', 777, 'psan123');
-insert into app_admin values('mmej@mail.com', 'Monica Mejia', 200, 'mmej321');
-insert into app_admin values('rgra@mail.com', 'Roberto Gracia', 1023, 'rgra666');
-insert into app_admin values('rrr@mail.com', 'Roberto Ramires Rocha', 10200, 'DieguitoMaradona');
-insert int app_admin values('hladrielfermin11@yopmail.com ','Adriel Fermin Fernández Chokri',32144,'l75180h7l');
+insert into app_admin values
+('psan@mail.com', 'Pedro Sanchez', 777, 'psan123'),
+('mmej@mail.com', 'Monica Mejia', 200, 'mmej321'),
+('rgra@mail.com', 'Roberto Gracia', 1023, 'rgra666'),
+('rrr@mail.com', 'Roberto Ramires Rocha', 10200, 'DieguitoMaradona'),
+('hladrielfermin11@yopmail.com ','Adriel Fermin Fernández Chokri',32144,'l75180h7l');
 
 -- customers -> c_email 255, c_name 255,c_phone 13, c_password 255
-insert into customers values('mrbuyer@mail.com', 'Rigoberto Guardado', '525549302112', 'mcdinerox3');
-insert into customers values('mcqueenrayo@mail.com', 'Marcelo Reina', '525538382972', '12345jeje');
-insert into customers values('licpugberto@mail.com', 'Alberto Del Rio Sanchez', '525538382975', 'vivalospug5');
-insert into customers values('almonez@mail.com', 'Alex Montes Gomez', '525538382932', '312452jjdks1');
-insert into customers values('ecbergon2@yopmail.com', 'Asunción Messeguer Bergon', '4449668226', 'c62994e4c');
+insert into customers values
+('mrbuyer@mail.com', 'Rigoberto Guardado', '525549302112', 'mcdinerox3'),
+('mcqueenrayo@mail.com', 'Marcelo Reina', '525538382972', '12345jeje'),
+('licpugberto@mail.com', 'Alberto Del Rio Sanchez', '525538382975', 'vivalospug5'),
+('almonez@mail.com', 'Alex Montes Gomez', '525538382932', '312452jjdks1'),
+('ecbergon2@yopmail.com', 'Asunción Messeguer Bergon', '4449668226', 'c62994e4c');
 
 -- delivery_men  -> dm_email 255, dm_name 255, dm_phone 13, dm_password 255, dm_rfc 10
-insert into delivery_men values('byhuerta24@yopmail.com','Cesar López Huerta','7375772765','y56587b1y','LEHC700922261');
-insert into delivery_men values('gvmorientes21@yopmail.com','Estibaliz Dotras Morientes','0506004474','v476110g6v','DOME860811QA4');
-insert into delivery_men values('erana17@yopmail.com','Ana Tran Abietar','4342998120','r02204e4r','TAAA960208SE4');
-insert into delivery_men values('hahipolito0@yopmail.com','Hipolito Rebordosa Jusue','4348226608','a80854h7a','REJH730501GW9');
-insert into delivery_men values('dktiburciofelipe10@yopmail.com','Tiburcio Felipe Peci Bolbos','2426556047','k74652d3k','PEBT750520ARA');
+insert into delivery_men values
+('byhuerta24@yopmail.com','Cesar López Huerta','7375772765','y56587b1y','LEHC700922261'),
+('gvmorientes21@yopmail.com','Estibaliz Dotras Morientes','0506004474','v476110g6v','DOME860811QA4'),
+('erana17@yopmail.com','Ana Tran Abietar','4342998120','r02204e4r','TAAA960208SE4'),
+('hahipolito0@yopmail.com','Hipolito Rebordosa Jusue','4348226608','a80854h7a','REJH730501GW9'),
+('dktiburciofelipe10@yopmail.com','Tiburcio Felipe Peci Bolbos','2426556047','k74652d3k','PEBT750520ARA');
 
 -- store_admin -> sa_email 255, sa_name 255,  sa_phone 13, sa_password 255, sa_rfc 10
-insert into store_admin values('gqarnoldo16@yopmail.com', 'Arnoldo Wahbi Mena', '1316995834', 'q43691g6q', 'WAMA940809JWA');
-insert into store_admin values('ghfarhat7@yopmail.com', 'Isidora Evelina Fajin Farhat', '1417443279', 'h97731g6h', 'FAFI750918FC1');
-insert into store_admin values('ioabelmartin14@yopmail.com', 'Abel Martín Ayude Slavov', '9592996274', 'o472109i8o', 'AUSA90110898A');
-insert into store_admin values('jfamaranatalia5@yopmail.com', 'Amara Natalia Eyre Viva', '0502559912', 'f21200j9f', 'EEVA760519CI0');
-insert into store_admin values('bnasuncion13@yopmail.com', 'Asunción Fulleda Ricos', '5356224735', 'n53605b1n', 'FURA9811182K5');
+insert into store_admin values
+('gqarnoldo16@yopmail.com', 'Arnoldo Wahbi Mena', '1316995834', 'q43691g6q', 'WAMA940809JWA'),
+('ghfarhat7@yopmail.com', 'Isidora Evelina Fajin Farhat', '1417443279', 'h97731g6h', 'FAFI750918FC1'),
+('ioabelmartin14@yopmail.com', 'Abel Martín Ayude Slavov', '9592996274', 'o472109i8o', 'AUSA90110898A'),
+('jfamaranatalia5@yopmail.com', 'Amara Natalia Eyre Viva', '0502559912', 'f21200j9f', 'EEVA760519CI0'),
+('bnasuncion13@yopmail.com', 'Asunción Fulleda Ricos', '5356224735', 'n53605b1n', 'FURA9811182K5');
 
 
 -- products -> p_id  auto_increment int unsigned, p_name 255, p_price int, p_brand 255,
 -- p_category 255, p_img_path 255,p_description 255
 
-insert into products (p_name, p_price, p_brand, p_category, p_img_path, p_description) 
-values('Agua de manantial Sta. María 4L', 17, 'Sta. María', 'Bebidas y Licores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750105923677L.jpg', 'Sta. María se embotella desde la fuente y esto le permite conservar sus características naturales y mantenerse intacta, ya que nace en una reserva natural protegida al pie del volcán Iztaccíhuatl, donde de manera natural se purifica.');
-insert into products (p_name, p_price, p_brand, p_category, p_img_path, p_description) 
-values('Refresco Coca Cola botella de 600 ml', 16, 'Coca Cola', 'Bebidas y Licores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00000007500761L.jpg', 'Acompaña tus alimentos preferidos o sacia tu antojo con una Coca Cola, bébela bien fría.
+insert into products (p_name, p_price, p_brand, p_category, p_img_path, p_description) values
+('Agua de manantial Sta. María 4L', 17, 'Sta. María', 'Bebidas y Licores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750105923677L.jpg', 'Sta. María se embotella desde la fuente y esto le permite conservar sus características naturales y mantenerse intacta, ya que nace en una reserva natural protegida al pie del volcán Iztaccíhuatl, donde de manera natural se purifica.');
+('Refresco Coca Cola botella de 600 ml', 16, 'Coca Cola', 'Bebidas y Licores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00000007500761L.jpg', 'Acompaña tus alimentos preferidos o sacia tu antojo con una Coca Cola, bébela bien fría.
 • Sabor original
 • Práctica presentación pet 600 ml
 • Aporta 252 kcal');
-insert into products (p_name, p_price, p_brand, p_category, p_img_path, p_description) 
-values('Papas Sabritas Original original 160 g', 41, 'Sabritas', 'Botanas y Fruta seca', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750101113388L.jpg', 'Disfruta tus papas Sabritas originales, en cualquier lugar y a cualquier hora del día! ¡Compártelas con quien tú quieras!
+('Papas Sabritas Original original 160 g', 41, 'Sabritas', 'Botanas y Fruta seca', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750101113388L.jpg', 'Disfruta tus papas Sabritas originales, en cualquier lugar y a cualquier hora del día! ¡Compártelas con quien tú quieras!
 - Sólo 3 ingredientes: papa, aceite y sal
 - Tamaño familiar
 - Snack crujiente');
-insert into products (p_name, p_price, p_brand, p_category, p_img_path, p_description) 
-values('Pan tostado Bimbo clásico 270 g', 33, 'Bimbo', 'Pan y tortillas', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750103049766L.jpg', 'Empieza tus días de la mejor forma con una rebanada de pan tostado Bimbo clásico en tu desayuno, es perfecto para acompañar tu café, y para darte toda la energía que necesitas. Encuéntralo en su presentación de 270 g.');
-insert into products (p_name, p_price, p_brand, p_category, p_img_path, p_description) 
-values('Mole rojo Doña María en pasta 235 g', 24, 'Doña Maria', 'Especias y Sazonadores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750100315023L.jpg', 'Mole Doña María preserva la receta tradicional. Contiene una mezcla de chiles y especias, cacao, ajonjolí y cacahuate, lo que le da ese rico sabor. Prepara tus platillos incorporando esta deliciosa pasta, tendrá un toque muy mexicano.
+('Pan tostado Bimbo clásico 270 g', 33, 'Bimbo', 'Pan y tortillas', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750103049766L.jpg', 'Empieza tus días de la mejor forma con una rebanada de pan tostado Bimbo clásico en tu desayuno, es perfecto para acompañar tu café, y para darte toda la energía que necesitas. Encuéntralo en su presentación de 270 g.');
+('Mole rojo Doña María en pasta 235 g', 24, 'Doña Maria', 'Especias y Sazonadores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750100315023L.jpg', 'Mole Doña María preserva la receta tradicional. Contiene una mezcla de chiles y especias, cacao, ajonjolí y cacahuate, lo que le da ese rico sabor. Prepara tus platillos incorporando esta deliciosa pasta, tendrá un toque muy mexicano.
 •Ingredientes naturales
 •Mole en pasta ideal para agregar tu sazón
 • Ideal para proteínas como pollo o carne');
-insert into products (p_name, p_price, p_brand, p_category, p_img_path, p_description) 
-values('Café soluble Nescafé estilo café de olla 170 g', 47, 'Nescafe', 'Cafe y solubles', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750105861891L.jpg', 'Nescafé de olla es el café soluble ideal para disfrutar al instante en cualquier momento del día. Delicioso café instantáneo hecho en México que rescata la tradicional receta del café de olla.
+('Café soluble Nescafé estilo café de olla 170 g', 47, 'Nescafe', 'Cafe y solubles', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750105861891L.jpg', 'Nescafé de olla es el café soluble ideal para disfrutar al instante en cualquier momento del día. Delicioso café instantáneo hecho en México que rescata la tradicional receta del café de olla.
 • Mezcla de granos de café robusta
 • Con caramelo, sabor a canela y piloncillo
 • Soluble');
 -- health_certificate -> hc_id int unsigned, hc_last_inspection date not null.
-insert into health_certificate values(123, '2021-06-19');
-insert into health_certificate values(3214, '2020-08-09');
-insert into health_certificate values(1321, '2019-03-11');
-insert into health_certificate values(5435, '2021-03-29');
-insert into health_certificate values(163, '2020-02-01');
+insert into health_certificate values
+(123, '2021-06-19'),
+(3214, '2020-08-09'),
+(1321, '2019-03-11'),
+(5435, '2021-03-29'),
+(163, '2020-02-01');
 
 -- inventories -> [FK(stores) s_id int unsigned ], FK(products) p_id int unsigned,
 -- i_quantity int unsigned not null
-insert into inventories (s_id, p_id, i_quantity) values(1,3, 1);
-insert into inventories (s_id, p_id, i_quantity) values(2,2, 3);
-insert into inventories (s_id, p_id, i_quantity) values(3,3, 6);
-insert into inventories (s_id, p_id, i_quantity) values(1,4, 4);
-insert into inventories (s_id, p_id, i_quantity) values(1,5, 152);
-insert into inventories (s_id, p_id, i_quantity) values(2,3, 3);
-insert into inventories (s_id, p_id, i_quantity) values(4,2, 14);
-insert into inventories (s_id, p_id, i_quantity) values(5,1, 12);
-insert into inventories (s_id, p_id, i_quantity) values(1,4, 13);
-insert into inventories (s_id, p_id, i_quantity) values(3,4, 11);
-insert into inventories (s_id, p_id, i_quantity) values(2,5, 21);
-insert into inventories (s_id, p_id, i_quantity) values(4,3, 43);
-insert into inventories (s_id, p_id, i_quantity) values(5,3, 32);
-insert into inventories (s_id, p_id, i_quantity) values(3,2, 2);
-insert into inventories (s_id, p_id, i_quantity) values(2,2, 1);
-insert into inventories (s_id, p_id, i_quantity) values(5,4, 3);
-insert into inventories (s_id, p_id, i_quantity) values(4,3, 43);
-insert into inventories (s_id, p_id, i_quantity) values(3,5, 2);
+insert into inventories (i_id, p_id, i_quantity) values
+(1,3,1),
+(2,2,3),
+(3,3,6),
+(1,4,4),
+(1,5,152),
+(2,3,3),
+(4,2,14),
+(5,1,12),
+(1,4,13),
+(3,4,11),
+(2,5,21),
+(4,3,43),
+(5,3,32),
+(3,2,2),
+(2,2,1),
+(5,4,3),
+(4,3,43),
+(3,5,2);
 
 -- stores -> s_id auto_increment int, FK(store_admin) sa_email 13,
 -- FK(heatl_certificate) hc_id int unsigned, s_address 255, s_phone 13, s_schedule 255
-insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('gqarnoldo16@yopmail.com', 123, 'Boulevard Motrel No. 54, 22863, Campeche', '5356224735', '07:00-20:00');
-insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('ghfarhat7@yopmail.com', 3214, 'Avenida Ochoa de Eribe No. 199, 62262, Oaxaca', '0402004591', '10:00-22:00');
-insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('ioabelmartin14@yopmail.com', 1321, 'Orcero No. 38, 17378, Michoacán', '6566771374', '06:00-19:00');
-insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('ioabelmartin14@yopmail.com', 5435, 'Cerrada Estalrich No. 952, 38865, Baja California Sur', '7475116727', '06:00-22:00');
-insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('jfamaranatalia5@yopmail.com', 163, 'calle Santo de la Libertad No. 622, 72478, Yucatan', '8481112321', '11:00-23:30');
+insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values
+('gqarnoldo16@yopmail.com', 123, 'Boulevard Motrel No. 54, 22863, Campeche', '5356224735', '07:00-20:00'),
+('ghfarhat7@yopmail.com', 3214, 'Avenida Ochoa de Eribe No. 199, 62262, Oaxaca', '0402004591', '10:00-22:00'),
+('ioabelmartin14@yopmail.com', 1321, 'Orcero No. 38, 17378, Michoacán', '6566771374', '06:00-19:00'),
+('ioabelmartin14@yopmail.com', 5435, 'Cerrada Estalrich No. 952, 38865, Baja California Sur', '7475116727', '06:00-22:00'),
+('jfamaranatalia5@yopmail.com', 163, 'calle Santo de la Libertad No. 622, 72478, Yucatan', '8481112321', '11:00-23:30');
 
 -- ordered_products -> FK(products) p_id int, FK(orders) o_id int, FK(stores) s_id int, op_quantity int.
-insert into ordered_products values(1, 1, 1, 2);
-insert into ordered_products values(2, 1, 2, 3);
-insert into ordered_products values(3, 2, 3, 4);
-insert into ordered_products values(2, 2, 1, 5);
-insert into ordered_products values(1, 2, 4, 3);
-insert into ordered_products values(4, 3, 5, 1);
-insert into ordered_products values(1, 4, 2, 1);
-insert into ordered_products values(5, 5, 1, 1);
+insert into ordered_products values
+(1, 1, 1, 2),
+(2, 1, 2, 3),
+(3, 2, 3, 4),
+(2, 2, 1, 5),
+(1, 2, 4, 3),
+(4, 3, 5, 1),
+(1, 4, 2, 1),
+(5, 5, 1, 1);
 
 -- orders -> o_id int auto_increment, FK(delivery_men) dm_email 255, o_date date, o_status tinyint, o_cost int, o_delivery_address 255.
-insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('byhuerta24@yopmail.com', '2021-05-13', 1,  82, '19.330121932779146, -99.09453794371329');
-insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('gvmorientes21@yopmail.com', '2021-05-13', 1,  295, '19.410152002799045, -99.16078231384483');
-insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('erana17@yopmail.com', '2021-04-12', 1,  33, '19.431380537233316, -99.14279257400011');
-insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('hahipolito0@yopmail.com', '2021-05-13', 1, 24, '19.409790799438497, -99.08688771059344');
-insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('dktiburciofelipe10@yopmail.com', '2021-06-19', 0, 47, '25.71159589864659, -100.34888036333705');
+insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values
+('byhuerta24@yopmail.com', '2021-05-13', 1,  82, '19.330121932779146, -99.09453794371329'),
+('gvmorientes21@yopmail.com', '2021-05-13', 1,  295, '19.410152002799045, -99.16078231384483'),
+('erana17@yopmail.com', '2021-04-12', 1,  33, '19.431380537233316, -99.14279257400011'),
+('hahipolito0@yopmail.com', '2021-05-13', 1, 24, '19.409790799438497, -99.08688771059344'),
+('dktiburciofelipe10@yopmail.com', '2021-06-19', 0, 47, '25.71159589864659, -100.34888036333705');
 
 -- shopping_carts -> FK(customers) c_email 255, FK(products) p_id uint, sc_addition_date date, sc_quantity uint,
-insert into shopping_carts values('mrbuyer@mail.com', 1, '2021-05-15', 3);
-insert into shopping_carts values('mcqueenrayo@mail.com', 2, '2021-06-15', 1);
-insert into shopping_carts values('licpugberto@mail.com', 3, '2021-06-12', 2);
-insert into shopping_carts values('licpugberto@mail.com', 4, '2021-06-11', 10);
-insert into shopping_carts values('licpugberto@mail.com', 5, '2021-06-12', 8);
+insert into shopping_carts values
+('mrbuyer@mail.com', 1, '2021-05-15', 3),
+('mcqueenrayo@mail.com', 2, '2021-06-15', 1),
+('licpugberto@mail.com', 3, '2021-06-12', 2),
+('licpugberto@mail.com', 4, '2021-06-11', 10),
+('licpugberto@mail.com', 5, '2021-06-12', 8);
 
 -- orders_histories FK(customers) c_email 255, FK(orders) o_id uint.  
-insert into orders_histories values('byhuerta24@yopmail.com', 1);
-insert into orders_histories values('gvmorientes21@yopmail.com', 2);
-insert into orders_histories values('erana17@yopmail.com', 3);
-insert into orders_histories values('hahipolito0@yopmail.com', 4);
-insert into orders_histories values('dktiburciofelipe10@yopmail.com', 5);
+insert into orders_histories values
+('byhuerta24@yopmail.com', 1),
+('gvmorientes21@yopmail.com', 2),
+('erana17@yopmail.com', 3),
+('hahipolito0@yopmail.com', 4),
+('dktiburciofelipe10@yopmail.com', 5);
 
 -- balance -> FK(delivery_men) dm_email 255, FK(orders) o_id uint, b_gain uint,
-insert into balance values('byhuerta24@yopmail.com', 1, 30);
-insert into balance values('gvmorientes21@yopmail.com', 2, 31);
-insert into balance values('erana17@yopmail.com', 3, 32);
-insert into balance values('hahipolito0@yopmail.com', 4, 33);
-insert into balance values('dktiburciofelipe10@yopmail.com', 5, 35);
+insert into balance values
+('byhuerta24@yopmail.com', 1, 30),
+('gvmorientes21@yopmail.com', 2, 31),
+('erana17@yopmail.com', 3, 32),
+('hahipolito0@yopmail.com', 4, 33),
+('dktiburciofelipe10@yopmail.com', 5, 35);
 
 -- review -> FK(products)p_id uint, r_grade tinyint uint, r_opinon 255,
-insert into review values(1, 5, 'excelente awua, como dice el bicho awua > coca, cocazzz awuagod');
-insert into review values(2, 4, 'cocaogd, todo un clasico, pero sabe mejor la peksi por eso 4');
-insert into review values(3, 3, 'me salio un cheto en mis papas, por eso 3');
-insert into review values(4, 5, 'que wuen pan, el mejor pan que he comido, deberian hacerle un monumento +100');
-insert into review values(5, 1, 'una vez por accidente tome agua con tierra y sabia mejor que este cafe :(');
-insert into review values(1, 1, 'El agua es muy zzz tomen coca');
-insert into review values(2, 3, 'Antes la coca era chevere');
+insert into review values
+(1, 5, 'excelente awua, como dice el bicho awua > coca, cocazzz awuagod'),
+(2, 4, 'cocaogd, todo un clasico, pero sabe mejor la peksi por eso 4'),
+(3, 3, 'me salio un cheto en mis papas, por eso 3'),
+(4, 5, 'que wuen pan, el mejor pan que he comido, deberian hacerle un monumento +100'),
+(5, 1, 'una vez por accidente tome agua con tierra y sabia mejor que este cafe :('),
+(1, 1, 'El agua es muy zzz tomen coca'),
+(2, 3, 'Antes la coca era chevere');

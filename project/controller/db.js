@@ -18,26 +18,26 @@ try {
     console.log(error);
 }
 
- function query(lit_query) {
-    return new Promise(
-        (resolve,reject)=>{
-            try {
-                connection.query(lit_query, (err, result) => {
-                    if (err) throw err;
-                    resolve(result);
-                }); 
-            } 
-            catch (error){
-                reject(error);
-            }
-        }
-    );
+function query(lit_query) {
+    let a;
+    try{
+        connection.query(lit_query, async (err, result) => {
+            if (err) throw err;
+            a=result;
+        }); 
+    }
+    catch(error){
+        console.log(error);
+        a="Error in Query";
+    }
+    return a;
 }module.exports.query = query;
 
+console.log(query("select * from products;"));
 // Save entities rows________________________________________________________________________________________________________________
 
- async function createCustomer(email, name, phone, password) {
-    await query(`call createCustomer
+function createCustomer(email, name, phone, password) {
+    query(`call createCustomer
         (
             '${email}',
             '${name}',
