@@ -39,7 +39,7 @@ create table store_admin(
 create table products(
   p_id int unsigned not null auto_increment,
   p_name nvarchar(255) not null,
-  p_price int unsigned not null,
+  p_price FLOAT(3,2) not null,
   p_brand nvarchar(255),
   p_category nvarchar(255) not null,
   p_img_path nvarchar(255),
@@ -75,7 +75,7 @@ create table inventories(
 
 create table stores(
   s_id int unsigned not null auto_increment,  
-  sa_email nvarchar (13),
+  sa_email nvarchar (255),
   i_id int unsigned,
   hc_id int unsigned,
   s_address nvarchar(255) not null,
@@ -101,7 +101,7 @@ create table stores(
     references health_certificate(hc_id)
     ON DELETE CASCADE  
     ON UPDATE CASCADE
-);  
+);
 
 create table orders(
   o_id int unsigned not null auto_increment,
@@ -178,6 +178,7 @@ create table ordered_products(
   o_id int unsigned,
   p_id int unsigned,
   op_quantity int unsigned not null,
+  s_id int unsigned not null,
 
   constraint fk__op_p
     foreign key(p_id) 
@@ -188,6 +189,12 @@ create table ordered_products(
   constraint fk__op_o
     foreign key(o_id) 
     references orders(o_id)
+    ON DELETE CASCADE  
+    ON UPDATE CASCADE,
+
+  constraint fk_op_s
+    foreign key(s_id) 
+    references stores(s_id)
     ON DELETE CASCADE  
     ON UPDATE CASCADE
 );

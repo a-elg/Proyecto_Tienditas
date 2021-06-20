@@ -13,33 +13,9 @@
 require("dotenv").config();
 const fs = require("fs");
 const express = require("express");
-//const MySQL = require("./project/controller/db.js");
+const MySQL = require("./project/controller/db.js");
 const app = express();
 let connection_ready = false;
-//const mysql = require("./project/controller/db.js");
-
-/*let con = mysql.createConnection({
-    user: "root",
-    password:`${process.env.mysql_pw}`,
-    database:"aki"
-});
-
-con.connect((err)=>{
-  if(err) throw err;
-  console.log("MySQL server connected");
-  connection_ready=true;
-});
-
-function query(lit_query){
-  if(!connection_ready)
-    return null;
-  con.query(lit_query,(err,result)=>{
-    if(err)throw err;
-    console.log(result);
-    console.log(`Result of Query: ${result.affectedRows}`);
-    console.log("Query realizada");
-  });
-}*/
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -109,13 +85,41 @@ app.post("/asignin", (request, response) => {
 });
 
 //Operations_______________________________________________________________
-app.post("/catalog", (request, response) => {
-    console.log(request.body);
+app.post("/catalog", async (request, response) => {
     if (request.headers.referer.includes("http://localhost:5000/home.html")) {
-        response.contentType(`text/plain`);
-        response.send('Catalog');
+      //quiero el arreglo de productos (los primeros 25) como cadena JSON
+      //se lo mando
+      let objchido = request.body;
+      console.log(objchido);
+      //0,1,2,3,4,5;
+      let catalogJSON;
+
+
+      await MySQL.getCatalog(request.body.count).then((param)=>{
+          console.log(param);
+        catalogJSON=JSON.stringify(param);
+        console.log(catalogJSON);
+        console.log("BEFORE SENDING, ARRAY DISPLAYS ON TOP");
+        catalogJSON = '[{"sku": 1, "name":"Awa del bicho", "brand": "Bicho", "price":20.0, "desc": "Coca cola no, awa como el bicho", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}, {"sku": 2, "name":"Awa del bicho 2", "brand": "Bicho", "price":25.0, "desc": "Coca cola no, awa como el bicho 2", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}]';
+        response.contentType("application/json");
+        response.send(catalogJSON);
+        response.end();
+        console.log("RESPONSE ENDED");
+      }).catch(resp=>console.log("kha"));
+
+      /*catalogJSON = await MySQL.getCatalog(request.body.count);
+      console.log(catalogJSON);
+      console.log("BEFORE SENDING, ARRAY DISPLAYS ON TOP");
+      //catalogJSON = '[{"sku": 1, "name":"Awa del bicho", "brand": "Bicho", "price":20.0, "desc": "Coca cola no, awa como el bicho", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}, {"sku": 2, "name":"Awa del bicho 2", "brand": "Bicho", "price":25.0, "desc": "Coca cola no, awa como el bicho 2", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}]';
+      response.contentType("application/json");
+      response.send(catalogJSON);
+      response.end();
+      console.log("RESPONSE ENDED");
+      */
+      //readAllCatalog first 25 elements
     }
-    response.end();
+    else
+      response.end();
 });
 
 //Error handling____________________________________________________________

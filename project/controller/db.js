@@ -3,6 +3,7 @@ require("dotenv").config()
 const { addressparser } = require("emailjs");
 const mysql = require("mysql");
 const users = require("./../model/User.js");
+const products = require("./../model/Product.js");
 
 let connection = mysql.createConnection({
     user: `${process.env.mysql_user}`,
@@ -10,19 +11,23 @@ let connection = mysql.createConnection({
     database: `${process.env.mysql_db}`
 });
 
+try {
+    connection.connect((err) => {if(err)throw err});
+} catch (error) {
+    console.log("Connection failed");
+    console.log(error);
+}
+
  function query(lit_query) {
     return new Promise(
         (resolve,reject)=>{
             try {
-                connection.connect((err) => {
+                connection.query(lit_query, (err, result) => {
                     if (err) throw err;
-                    connection.query(lit_query, (err, result) => {
-                        if (err) throw err;
-                        resolve(result);
-                    });
-                });
+                    resolve(result);
+                }); 
             } 
-            catch (error){ 
+            catch (error){
                 reject(error);
             }
         }
@@ -31,7 +36,7 @@ let connection = mysql.createConnection({
 
 // Save entities rows________________________________________________________________________________________________________________
 
- async function saveCustomer(email, name, phone, password) {
+ async function createCustomer(email, name, phone, password) {
     await query(`call createCustomer
         (
             '${email}',
@@ -57,7 +62,7 @@ let connection = mysql.createConnection({
         }
     );
 
-}module.exports.saveCustomer = saveCustomer;
+}module.exports.createCustomer = createCustomer;
 
 
 async function saveProduct(name,price,brand,category,img_path,description){
@@ -117,12 +122,39 @@ async function signinCustomer(email, password) {
             a= false;
         }
     );
-    if(a)
-        a=await readCustomer(email);
-    else
-        a=null;
+
     return a;
 }module.exports.signinCustomer = signinCustomer;
+
+
+async function getCatalog(scrolling_offset){
+    let a=[]; 
+    let inf_boud=scrolling_offset*25;
+    let sup_boud=inf_boud+26;
+    await query(`select * from products where p_id>${inf_boud} AND p_id<${sup_boud}`)
+    .then(
+        (result)=>{
+            console.log("Succesfull query");
+            if(!result){
+                console.log("false 1");
+                return Promise.resolve(null);
+            }
+            result.forEach(
+                (elemento)=>{
+                        a.push(new products.Product(elemento.p_id,elemento.p_name,elemento.p_brand,elemento.p_category,elemento.p_price, elemento.p_description,elemento.p_img_path))
+                }
+            );
+            console.log(a);
+            return Promise.resolve(a);
+        }
+    )
+    .catch(
+        (result)=>{
+            console.log("false 2");
+            return Promise.resolve(null);
+        }
+    );
+}module.exports.getCatalog=getCatalog;
 
 async function readCustomer(email) {
     await query(`call readCustomer('${email}');`)
@@ -145,9 +177,28 @@ async function readCustomer(email) {
 }module.exports.readCustomer = readCustomer;
 
 async function getShoppingCart(email) {
-    let query_result = query(`select * from shopping_carts where c_mail=${email};`);
+    await query(`select * from shopping_carts where c_email='${email}';`)
+    .then(
+        (result)=>{
+            console.log("Succesfull query");
+            if(!result){
+                return false;
+            }
+            console.log(result);
+            result=result[0][0];
+            return true;
+        }
+    )
+    .catch(
+        (result)=>{
+            return false;
+        }
+    );
 }
-readCustomer("emmanuel@outlook.com");
+
+//saveProduct("Gomitas",12,"Ricolino","Dulces","https://www.superama.com.mx/Content/images/products/img_large/0750303037408L.jpg","Gomitas bañadas en azucar 63gr");
+
+//getShoppingCart("emmanuel@outlook.com");
 
 
 
@@ -280,3 +331,47 @@ Quieries de consulta:
         Row{col1:val1,col2:val2,...,col3:val3}
     ]
 */
+
+/**
+ * Catálodo
+ * Arreglo de productos
+ * 
+ * Para cada signin
+ * nombre 
+ * 
+ * Consultar carrito
+ * arreglo obj_prod-candidad
+ * 
+ * Añadir product a carrito
+ * sobreescribit
+ * 
+ * ordenes de un repartidor
+ * devoler las últimas 3
+ *  id_orden
+ *  delivery address
+ *  descripción del prod
+ *  cantidadad
+ * 
+ * Historial lo mismo ↑
+ * 
+ * Añadir producto de tienda cuando añadimos prod   
+ * 
+ * Buscar producto similar
+ *  5 prod max
+ * mandan cadena, regresar prod
+ * 
+ * getstoresfromadmin admin store
+ *  correo del admin
+ *  la tienda
+ * 
+ * Actualizar existencias
+ *  Manda id de tienda
+ *  mandar id prod
+ *  candidad a remplazar
+ *  
+ * retirar prod de tu tienda
+ *  retirar de tabla prod
+ * 
+ * cada que se consulte por un producto, si su existencia es 0, no mostrar
+ * 
+ */
