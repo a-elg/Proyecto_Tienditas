@@ -175,8 +175,9 @@ create table balance(
 );
 
 create table ordered_products(
-  o_id int unsigned,
   p_id int unsigned,
+  o_id int unsigned,
+  s_id int unsigned,
   op_quantity int unsigned not null,
   s_id int unsigned not null,
 
@@ -193,6 +194,12 @@ create table ordered_products(
     ON UPDATE CASCADE,
 
   constraint fk_op_s
+    foreign key(s_id) 
+    references stores(s_id)
+    ON DELETE CASCADE  
+    ON UPDATE CASCADE
+
+  constraint fk__op_s
     foreign key(s_id) 
     references stores(s_id)
     ON DELETE CASCADE  
@@ -503,11 +510,11 @@ end$$
 delimiter ;
 
 -- app admin -> aa_email 255, aa_name 255, aa_gain uint, aa_password 255,
-insert into app_admin values('psan@mail.com', 'Pedro Sanchez', '777', 'psan123');
-insert into app_admin values('mmej@mail.com', 'Monica Mejia', '200', 'mmej321');
-insert into app_admin values('rgra@mail.com', 'Roberto Gracia', '1023', 'rgra666');
-insert into app_admin values('rrr@mail.com', 'Roberto Ramires Rocha', '10200', 'DieguitoMaradona');
-insert int app_admin values('hladrielfermin11@yopmail.com ','Adriel Fermin Fernández Chokri','32144','l75180h7l');
+insert into app_admin values('psan@mail.com', 'Pedro Sanchez', 777, 'psan123');
+insert into app_admin values('mmej@mail.com', 'Monica Mejia', 200, 'mmej321');
+insert into app_admin values('rgra@mail.com', 'Roberto Gracia', 1023, 'rgra666');
+insert into app_admin values('rrr@mail.com', 'Roberto Ramires Rocha', 10200, 'DieguitoMaradona');
+insert int app_admin values('hladrielfermin11@yopmail.com ','Adriel Fermin Fernández Chokri',32144,'l75180h7l');
 
 -- customers -> c_email 255, c_name 255,c_phone 13, c_password 255
 insert into customers values('mrbuyer@mail.com', 'Rigoberto Guardado', '525549302112', 'mcdinerox3');
@@ -519,7 +526,7 @@ insert into customers values('ecbergon2@yopmail.com', 'Asunción Messeguer Bergo
 -- delivery_men  -> dm_email 255, dm_name 255, dm_phone 13, dm_password 255, dm_rfc 10
 insert into delivery_men values('byhuerta24@yopmail.com','Cesar López Huerta','7375772765','y56587b1y','LEHC700922261');
 insert into delivery_men values('gvmorientes21@yopmail.com','Estibaliz Dotras Morientes','0506004474','v476110g6v','DOME860811QA4');
-insert into delivery_men values('erana17@yopmail.com ','Ana Tran Abietar','4342998120','r02204e4r','TAAA960208SE4');
+insert into delivery_men values('erana17@yopmail.com','Ana Tran Abietar','4342998120','r02204e4r','TAAA960208SE4');
 insert into delivery_men values('hahipolito0@yopmail.com','Hipolito Rebordosa Jusue','4348226608','a80854h7a','REJH730501GW9');
 insert into delivery_men values('dktiburciofelipe10@yopmail.com','Tiburcio Felipe Peci Bolbos','2426556047','k74652d3k','PEBT750520ARA');
 
@@ -559,46 +566,84 @@ values('Café soluble Nescafé estilo café de olla 170 g', 47, 'Nescafe', 'Cafe
 • Con caramelo, sabor a canela y piloncillo
 • Soluble');
 -- health_certificate -> hc_id int unsigned, hc_last_inspection date not null.
-insert into health_certificate values('123', '2021-06-19');
-insert into health_certificate values('3214', '2020-08-09');
-insert into health_certificate values('1321', '2019-03-11');
-insert into health_certificate values('5435', '2021-03-29');
-insert into health_certificate values('163', '2020-02-01');
+insert into health_certificate values(123, '2021-06-19');
+insert into health_certificate values(3214, '2020-08-09');
+insert into health_certificate values(1321, '2019-03-11');
+insert into health_certificate values(5435, '2021-03-29');
+insert into health_certificate values(163, '2020-02-01');
 
--- stores -> s_id auto_increment int, FK(store_admin) sa_email 13, i_id int unsigned, hc_id int unsigned, s_address 255,
--- s_phone 13, s_schedule 255
---   constraint fk_s_i
---     foreign key(i_id) 
---     references inventories(i_id)
---     ON DELETE CASCADE  
---     ON UPDATE CASCADE,
- 
---   constraint fk_s_hc
---     foreign key(hc_id) 
---     references health_certificate(hc_id)
---     ON DELETE CASCADE  
---     ON UPDATE CASCADE
--- -- );  
--- insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+-- inventories -> [FK(stores) s_id int unsigned ], FK(products) p_id int unsigned,
+-- i_quantity int unsigned not null
+insert into inventories (s_id, p_id, i_quantity) values(1,3, 1);
+insert into inventories (s_id, p_id, i_quantity) values(2,2, 3);
+insert into inventories (s_id, p_id, i_quantity) values(3,3, 6);
+insert into inventories (s_id, p_id, i_quantity) values(1,4, 4);
+insert into inventories (s_id, p_id, i_quantity) values(1,5, 152);
+insert into inventories (s_id, p_id, i_quantity) values(2,3, 3);
+insert into inventories (s_id, p_id, i_quantity) values(4,2, 14);
+insert into inventories (s_id, p_id, i_quantity) values(5,1, 12);
+insert into inventories (s_id, p_id, i_quantity) values(1,4, 13);
+insert into inventories (s_id, p_id, i_quantity) values(3,4, 11);
+insert into inventories (s_id, p_id, i_quantity) values(2,5, 21);
+insert into inventories (s_id, p_id, i_quantity) values(4,3, 43);
+insert into inventories (s_id, p_id, i_quantity) values(5,3, 32);
+insert into inventories (s_id, p_id, i_quantity) values(3,2, 2);
+insert into inventories (s_id, p_id, i_quantity) values(2,2, 1);
+insert into inventories (s_id, p_id, i_quantity) values(5,4, 3);
+insert into inventories (s_id, p_id, i_quantity) values(4,3, 43);
+insert into inventories (s_id, p_id, i_quantity) values(3,5, 2);
 
+-- stores -> s_id auto_increment int, FK(store_admin) sa_email 13,
+-- FK(heatl_certificate) hc_id int unsigned, s_address 255, s_phone 13, s_schedule 255
+insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('gqarnoldo16@yopmail.com', 123, 'Boulevard Motrel No. 54, 22863, Campeche', '5356224735', '07:00-20:00');
+insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('ghfarhat7@yopmail.com', 3214, 'Avenida Ochoa de Eribe No. 199, 62262, Oaxaca', '0402004591', '10:00-22:00');
+insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('ioabelmartin14@yopmail.com', 1321, 'Orcero No. 38, 17378, Michoacán', '6566771374', '06:00-19:00');
+insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('ioabelmartin14@yopmail.com', 5435, 'Cerrada Estalrich No. 952, 38865, Baja California Sur', '7475116727', '06:00-22:00');
+insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values('jfamaranatalia5@yopmail.com', 163, 'calle Santo de la Libertad No. 622, 72478, Yucatan', '8481112321', '11:00-23:30');
 
--- -- inventories -> i_id int unsigned not null auto_increment, p_id int unsigned, i_quantity int unsigned not null,
--- insert into inventories (p_id, i_quantity) values(1, 15);
+-- ordered_products -> FK(products) p_id int, FK(orders) o_id int, FK(stores) s_id int, op_quantity int.
+insert into ordered_products values(1, 1, 1, 2);
+insert into ordered_products values(2, 1, 2, 3);
+insert into ordered_products values(3, 2, 3, 4);
+insert into ordered_products values(2, 2, 1, 5);
+insert into ordered_products values(1, 2, 4, 3);
+insert into ordered_products values(4, 3, 5, 1);
+insert into ordered_products values(1, 4, 2, 1);
+insert into ordered_products values(5, 5, 1, 1);
 
--- -- orders
--- insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+-- orders -> o_id int auto_increment, FK(delivery_men) dm_email 255, o_date date, o_status tinyint, o_cost int, o_delivery_address 255.
+insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('byhuerta24@yopmail.com', '2021-05-13', 1,  82, '19.330121932779146, -99.09453794371329');
+insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('gvmorientes21@yopmail.com', '2021-05-13', 1,  295, '19.410152002799045, -99.16078231384483');
+insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('erana17@yopmail.com', '2021-04-12', 1,  33, '19.431380537233316, -99.14279257400011');
+insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('hahipolito0@yopmail.com', '2021-05-13', 1, 24, '19.409790799438497, -99.08688771059344');
+insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values('dktiburciofelipe10@yopmail.com', '2021-06-19', 0, 47, '25.71159589864659, -100.34888036333705');
 
--- -- shopping_carts
--- insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+-- shopping_carts -> FK(customers) c_email 255, FK(products) p_id uint, sc_addition_date date, sc_quantity uint,
+insert into shopping_carts values('mrbuyer@mail.com', 1, '2021-05-15', 3);
+insert into shopping_carts values('mcqueenrayo@mail.com', 2, '2021-06-15', 1);
+insert into shopping_carts values('licpugberto@mail.com', 3, '2021-06-12', 2);
+insert into shopping_carts values('licpugberto@mail.com', 4, '2021-06-11', 10);
+insert into shopping_carts values('licpugberto@mail.com', 5, '2021-06-12', 8);
 
--- -- orders_histories
--- insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+-- orders_histories FK(customers) c_email 255, FK(orders) o_id uint.  
+insert into orders_histories values('byhuerta24@yopmail.com', 1);
+insert into orders_histories values('gvmorientes21@yopmail.com', 2);
+insert into orders_histories values('erana17@yopmail.com', 3);
+insert into orders_histories values('hahipolito0@yopmail.com', 4);
+insert into orders_histories values('dktiburciofelipe10@yopmail.com', 5);
 
--- -- balance
--- insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+-- balance -> FK(delivery_men) dm_email 255, FK(orders) o_id uint, b_gain uint,
+insert into balance values('byhuerta24@yopmail.com', 1, 30);
+insert into balance values('gvmorientes21@yopmail.com', 2, 31);
+insert into balance values('erana17@yopmail.com', 3, 32);
+insert into balance values('hahipolito0@yopmail.com', 4, 33);
+insert into balance values('dktiburciofelipe10@yopmail.com', 5, 35);
 
--- -- ordered_products
--- insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
-
--- -- review
--- insert into app_admin values('jsuarez@gmail.com', 'Jose Juan SE', '777', 'porDieguitoMaradona');
+-- review -> FK(products)p_id uint, r_grade tinyint uint, r_opinon 255,
+insert into review values(1, 5, 'excelente awua, como dice el bicho awua > coca, cocazzz awuagod');
+insert into review values(2, 4, 'cocaogd, todo un clasico, pero sabe mejor la peksi por eso 4');
+insert into review values(3, 3, 'me salio un cheto en mis papas, por eso 3');
+insert into review values(4, 5, 'que wuen pan, el mejor pan que he comido, deberian hacerle un monumento +100');
+insert into review values(5, 1, 'una vez por accidente tome agua con tierra y sabia mejor que este cafe :(');
+insert into review values(1, 1, 'El agua es muy zzz tomen coca');
+insert into review values(2, 3, 'Antes la coca era chevere');
