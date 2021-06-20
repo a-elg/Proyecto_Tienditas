@@ -5,39 +5,56 @@ const mysql = require("mysql");
 const users = require("./../model/User.js");
 const products = require("./../model/Product.js");
 
-let connection = mysql.createConnection({
+const pool = mysql.createPool({
+    host: `${process.env.mysql_host}`,
     user: `${process.env.mysql_user}`,
     password: `${process.env.mysql_pw}`,
     database: `${process.env.mysql_db}`
-});
+})
 
-try {
-    connection.connect((err) => {if(err)throw err});
-} catch (error) {
-    console.log("Connection failed");
-    console.log(error);
-}
 
-function query(lit_query) {
-    let a;
-    try{
-        connection.query(lit_query, async (err, result) => {
-            if (err) throw err;
-            a=result;
-        }); 
-    }
-    catch(error){
-        console.log(error);
-        a="Error in Query";
-    }
-    return a;
-}module.exports.query = query;
 
-console.log(query("select * from products;"));
+function query(sql) {
+    return new Promise(
+        ( resolve, reject ) => {
+            pool.getConnection(
+                function(err, connection) {
+                    if (err) reject(err)
+                    else {
+                        connection.query(sql, 
+                            ( err, result) => {
+                                if ( err ) reject(err);
+                                else resolve(result);
+                                connection.release();
+                            }
+                        )
+                    }
+                }
+            )
+        }
+    )
+}module.exports.query= query;
+
+
+
+async function getCatalog(scrolling_offset) {
+    let inf_boud=scrolling_offset*25;
+    let sup_boud=inf_boud+26;
+    let result = [];
+    const arr = await query(`select * from products where p_id>${inf_boud} AND p_id<${sup_boud}`).catch((err)=>console.log(err));
+    arr.forEach(
+        (element)=>{
+            result.push(new products.Product(element.p_id,element.p_name,element.p_brand,element.p_category,element.p_price, element.p_description,element.p_img_path))
+        }
+    );
+    return result;
+}module.exports.getCatalog = getCatalog;
+
+   
 // Save entities rows________________________________________________________________________________________________________________
 
-function createCustomer(email, name, phone, password) {
-    query(`call createCustomer
+async function createCustomer(email, name, phone, password) {
+    await query(`call createCustomer
         (
             '${email}',
             '${name}',
@@ -127,34 +144,6 @@ async function signinCustomer(email, password) {
 }module.exports.signinCustomer = signinCustomer;
 
 
-async function getCatalog(scrolling_offset){
-    let a=[]; 
-    let inf_boud=scrolling_offset*25;
-    let sup_boud=inf_boud+26;
-    await query(`select * from products where p_id>${inf_boud} AND p_id<${sup_boud}`)
-    .then(
-        (result)=>{
-            console.log("Succesfull query");
-            if(!result){
-                console.log("false 1");
-                return Promise.resolve(null);
-            }
-            result.forEach(
-                (elemento)=>{
-                        a.push(new products.Product(elemento.p_id,elemento.p_name,elemento.p_brand,elemento.p_category,elemento.p_price, elemento.p_description,elemento.p_img_path))
-                }
-            );
-            console.log(a);
-            return Promise.resolve(a);
-        }
-    )
-    .catch(
-        (result)=>{
-            console.log("false 2");
-            return Promise.resolve(null);
-        }
-    );
-}module.exports.getCatalog=getCatalog;
 
 async function readCustomer(email) {
     await query(`call readCustomer('${email}');`)
@@ -375,3 +364,59 @@ Quieries de consulta:
  * cada que se consulte por un producto, si su existencia es 0, no mostrar
  * 
  */
+
+/*
+
+let connection = mysql.createConnection({
+    user: `${process.env.mysql_user}`,
+    password: `${process.env.mysql_pw}`,
+    database: `${process.env.mysql_db}`
+});
+try {
+    connection.connect((err) => {if(err)throw err});
+} catch (error) {
+    console.log("Connection failed");
+    console.log(error);
+}
+async function query(lit_query) {
+    return new Promise(
+        (resolve,reject)=>{
+            connection.query(lit_query, async (err, result) => {
+                if (err){
+                    reject(err)   
+                }
+                resolve (result);
+            });
+        }
+    )
+}module.exports.query = query;
+
+
+async function getCatalog(scrolling_offset){
+    let a=[]; 
+    let inf_boud=scrolling_offset*25;
+    let sup_boud=inf_boud+26;
+    await query(`select * from products where p_id>${inf_boud} AND p_id<${sup_boud}`)
+    .then(
+        (result)=>{
+            if(!result){
+                console.log("false 1");
+                return null;
+            }
+            result.forEach(
+                (element)=>{
+                        a.push(new products.Product(element.p_id,element.p_name,element.p_brand,element.p_category,element.p_price, element.p_description,element.p_img_path))
+                }
+            );
+            console.log(a);
+            return a;
+        }
+    )
+    .catch(
+        (result)=>{
+            console.log("false 2");
+            return null;
+        }
+    );
+}module.exports.getCatalog=getCatalog;
+*/

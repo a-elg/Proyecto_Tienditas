@@ -4,6 +4,10 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
+    width: 225px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media (min-width: 768px) {

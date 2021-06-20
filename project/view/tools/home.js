@@ -1,8 +1,9 @@
-let begins = "<div class='col'><div class='card shadow-sm'><img alt='Product' class='bd-placeholder-img card-img-top' width='100%' height='225' src='";
-let continues = "'/><div class='card-body'><p class='card-text fs-5'>";
+let begins = "<div class='col'><div class='card shadow-sm'><img alt='Product' class='bd-placeholder-img card-img-top' src='";
+let continues = "'/><div class='card-body'><p class='card-text text-break fs-5'>";
 let continues2 = "</p><p class='card-text'>";
 let continues3 = "</p><div class='d-flex justify-content-between align-items-center'><div class='btn-group'><button type='button' class='btn btn-sm btn-outline-primary'>Comprar</button><button type='button' class='btn btn-sm btn-outline-secondary'>Añadir al carrito</button></div></div></div></div></div>";
 let scrollcount = 0;
+let products = [];
 
 window.addEventListener('load', () => {
     home(0);
@@ -10,6 +11,7 @@ window.addEventListener('load', () => {
 });
 
 function home(scrollc) {
+    document.getElementById("loadAnim").style.display = "block";
     fetch('http://localhost:5000/catalog', {
             method: 'POST',
             headers: new Headers({
@@ -20,8 +22,9 @@ function home(scrollc) {
         })
         .then(response => response.json())
         .then(data => {
+            products = products.concat(data);
             let htmlstring = "";
-            data.forEach(element => {
+            products.forEach(element => {
                 htmlstring += begins;
                 htmlstring += element.img_path;
                 htmlstring += continues;
@@ -31,6 +34,7 @@ function home(scrollc) {
                 htmlstring += continues3;
             });
             document.getElementById("catalog").innerHTML = htmlstring;
+            document.getElementById("loadAnim").style.display = "none";
         })
         .catch(function(err) {
             console.error(err);

@@ -86,45 +86,33 @@ app.post("/asignin", (request, response) => {
 
 //Operations_______________________________________________________________
 app.post("/catalog", async (request, response) => {
-    if (request.headers.referer.includes("http://localhost:5000/home.html")) {
-      //quiero el arreglo de productos (los primeros 25) como cadena JSON
-      //se lo mando
-      let objchido = request.body;
-      console.log(objchido);
-      //0,1,2,3,4,5;
-      let catalogJSON;
-
-
-      await MySQL.getCatalog(request.body.count).then((param)=>{
-          console.log(param);
-        catalogJSON=JSON.stringify(param);
-        console.log(catalogJSON);
-        console.log("BEFORE SENDING, ARRAY DISPLAYS ON TOP");
-        catalogJSON = '[{"sku": 1, "name":"Awa del bicho", "brand": "Bicho", "price":20.0, "desc": "Coca cola no, awa como el bicho", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}, {"sku": 2, "name":"Awa del bicho 2", "brand": "Bicho", "price":25.0, "desc": "Coca cola no, awa como el bicho 2", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}]';
-        response.contentType("application/json");
-        response.send(catalogJSON);
-        response.end();
-        console.log("RESPONSE ENDED");
-      }).catch(resp=>console.log("kha"));
-
-      /*catalogJSON = await MySQL.getCatalog(request.body.count);
-      console.log(catalogJSON);
-      console.log("BEFORE SENDING, ARRAY DISPLAYS ON TOP");
+  let catalogJSON = [];
+  response.contentType("application/json");
+    if (request.headers.referer.includes(`http://${process.env.domain}/home.html`) || request.headers.referer.includes("http://127.0.0.1:5000/home.html")) {
+      console.log(request.body);
+      if(request.body.count != undefined || !isNaN(Number(request.body.count))){
+        catalogJSON = await MySQL.getCatalog(request.body.count);
+      }
       //catalogJSON = '[{"sku": 1, "name":"Awa del bicho", "brand": "Bicho", "price":20.0, "desc": "Coca cola no, awa como el bicho", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}, {"sku": 2, "name":"Awa del bicho 2", "brand": "Bicho", "price":25.0, "desc": "Coca cola no, awa como el bicho 2", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}]';
-      response.contentType("application/json");
+    }
+    else {
       response.send(catalogJSON);
       response.end();
-      console.log("RESPONSE ENDED");
-      */
-      //readAllCatalog first 25 elements
     }
-    else
-      response.end();
 });
 
 //Error handling____________________________________________________________
 
-
+app.get("/test",async (req,res)=>{
+  res.write("Prueba");
+  console.log("->");
+  let a;
+  await MySQL.query("select * from products;").then((res)=>{a=res; console.log("A asignada");})
+  console.log("<-");
+  console.log(a);
+  res.end();
+  //insert into products (p_name, p_price,p_brand,p_category,p_img_path,p_description) values ('Awa de owo',15,'UwUntu','Awuitas locas','https://res.cloudinary.com/walmart-labmg_large/00750105923677L.jpg','Una rica awita de owo... uwu');
+});
 console.log(`Server up at localhost:${process.env.port}`);
 //mysql.query(`call readCustomer('coorep')`);
 //MySQL.query("call signinCustomer('correo2','contrass');");

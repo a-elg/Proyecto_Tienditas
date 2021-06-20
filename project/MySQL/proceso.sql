@@ -22,7 +22,7 @@ create table delivery_men(
   dm_name nvarchar (255) not null,
   dm_phone nvarchar (13) not null,
   dm_password nvarchar (255) not null,
-  dm_rfc nvarchar(10) not null,
+  dm_rfc nvarchar(13) not null,
   primary key (dm_email)
 );
 
@@ -31,7 +31,7 @@ create table store_admin(
   sa_name nvarchar(255) not null,
   sa_phone nvarchar(13) not null,
   sa_password nvarchar(255) not null,
-  sa_rfc nvarchar(10) not null,
+  sa_rfc nvarchar(13) not null,
   
   primary key (sa_email)
 );
@@ -39,7 +39,7 @@ create table store_admin(
 create table products(
   p_id int unsigned not null auto_increment,
   p_name nvarchar(255) not null,
-  p_price FLOAT(3,2) not null,
+  p_price FLOAT(6,2) not null,
   p_brand nvarchar(255),
   p_category nvarchar(255) not null,
   p_img_path nvarchar(255),
@@ -55,24 +55,9 @@ create table health_certificate(
   primary key (hc_id)
 );
 
-create table inventories(
-  i_id int unsigned,
-  p_id int unsigned,
-  i_quantity int unsigned not null,
-
-  primary key (i_id),
-
-  constraint fk_i_p
-    foreign key(p_id) 
-    references products(p_id)
-    ON DELETE CASCADE  
-    ON UPDATE CASCADE
-);
-
 create table stores(
   s_id int unsigned not null auto_increment,  
   sa_email nvarchar (255),
-  i_id int unsigned,
   hc_id int unsigned,
   s_address nvarchar(255) not null,
   s_phone nvarchar(13) not null,
@@ -86,15 +71,28 @@ create table stores(
     ON DELETE CASCADE  
     ON UPDATE CASCADE,
 
-  constraint fk_s_i
-    foreign key(i_id) 
-    references inventories(i_id)
-    ON DELETE CASCADE  
-    ON UPDATE CASCADE,
-
   constraint fk_s_hc
     foreign key(hc_id) 
     references health_certificate(hc_id)
+    ON DELETE CASCADE  
+    ON UPDATE CASCADE
+);
+
+
+create table inventories(
+  s_id int unsigned,
+  p_id int unsigned,
+  i_quantity int unsigned not null,
+
+  constraint fk_sto_is
+    foreign key(s_id) 
+    references stores(s_id)
+    ON DELETE CASCADE  
+    ON UPDATE CASCADE,
+
+  constraint fk_pro_id
+    foreign key(p_id) 
+    references products(p_id)
     ON DELETE CASCADE  
     ON UPDATE CASCADE
 );
@@ -541,24 +539,18 @@ insert into store_admin values
 -- p_category 255, p_img_path 255,p_description 255
 
 insert into products (p_name, p_price, p_brand, p_category, p_img_path, p_description) values
-('Agua de manantial Sta. María 4L', 17, 'Sta. María', 'Bebidas y Licores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750105923677L.jpg', 'Sta. María se embotella desde la fuente y esto le permite conservar sus características naturales y mantenerse intacta, ya que nace en una reserva natural protegida al pie del volcán Iztaccíhuatl, donde de manera natural se purifica.');
+('Agua de manantial Sta. María 4L', 17, 'Sta. María', 'Bebidas y Licores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750105923677L.jpg', 'Sta. María se embotella desde la fuente y esto le permite conservar sus características naturales y mantenerse intacta, ya que nace en una reserva natural protegida al pie del volcán Iztaccíhuatl, donde de manera natural se purifica.'),
 ('Refresco Coca Cola botella de 600 ml', 16, 'Coca Cola', 'Bebidas y Licores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00000007500761L.jpg', 'Acompaña tus alimentos preferidos o sacia tu antojo con una Coca Cola, bébela bien fría.
 • Sabor original
 • Práctica presentación pet 600 ml
-• Aporta 252 kcal');
+• Aporta 252 kcal'),
 ('Papas Sabritas Original original 160 g', 41, 'Sabritas', 'Botanas y Fruta seca', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750101113388L.jpg', 'Disfruta tus papas Sabritas originales, en cualquier lugar y a cualquier hora del día! ¡Compártelas con quien tú quieras!
 - Sólo 3 ingredientes: papa, aceite y sal
 - Tamaño familiar
-- Snack crujiente');
-('Pan tostado Bimbo clásico 270 g', 33, 'Bimbo', 'Pan y tortillas', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750103049766L.jpg', 'Empieza tus días de la mejor forma con una rebanada de pan tostado Bimbo clásico en tu desayuno, es perfecto para acompañar tu café, y para darte toda la energía que necesitas. Encuéntralo en su presentación de 270 g.');
-('Mole rojo Doña María en pasta 235 g', 24, 'Doña Maria', 'Especias y Sazonadores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750100315023L.jpg', 'Mole Doña María preserva la receta tradicional. Contiene una mezcla de chiles y especias, cacao, ajonjolí y cacahuate, lo que le da ese rico sabor. Prepara tus platillos incorporando esta deliciosa pasta, tendrá un toque muy mexicano.
-•Ingredientes naturales
-•Mole en pasta ideal para agregar tu sazón
-• Ideal para proteínas como pollo o carne');
-('Café soluble Nescafé estilo café de olla 170 g', 47, 'Nescafe', 'Cafe y solubles', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750105861891L.jpg', 'Nescafé de olla es el café soluble ideal para disfrutar al instante en cualquier momento del día. Delicioso café instantáneo hecho en México que rescata la tradicional receta del café de olla.
-• Mezcla de granos de café robusta
-• Con caramelo, sabor a canela y piloncillo
-• Soluble');
+- Snack crujiente'),
+('Pan tostado Bimbo clásico 270 g', 33, 'Bimbo', 'Pan y tortillas', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750103049766L.jpg', 'Empieza tus días de la mejor forma con una rebanada de pan tostado Bimbo clásico en tu desayuno, es perfecto para acompañar tu café, y para darte toda la energía que necesitas. Encuéntralo en su presentación de 270 g.'),
+('Mole rojo Doña María en pasta 235 g', 24, 'Doña Maria', 'Especias y Sazonadores', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750100315023L.jpg', 'Mole Doña María preserva la receta tradicional. Contiene una mezcla de chiles y especias, cacao, ajonjolí y cacahuate, lo que le da ese rico sabor. Prepara tus platillos incorporando esta deliciosa pasta, tendrá un toque muy mexicano.'),
+('Café soluble Nescafé estilo café de olla 170 g', 47, 'Nescafe', 'Cafe y solubles', 'https://res.cloudinary.com/walmart-labs/image/upload/w_960,dpr_auto,f_auto,q_auto:best/gr/images/product-images/img_large/00750105861891L.jpg', 'Nescafé de olla es el café soluble ideal para disfrutar al instante en cualquier momento del día. Delicioso café instantáneo hecho en México que rescata la tradicional receta del café de olla.');
 -- health_certificate -> hc_id int unsigned, hc_last_inspection date not null.
 insert into health_certificate values
 (123, '2021-06-19'),
@@ -567,9 +559,18 @@ insert into health_certificate values
 (5435, '2021-03-29'),
 (163, '2020-02-01');
 
+-- stores -> s_id auto_increment int, FK(store_admin) sa_email 13,
+-- FK(heatl_certificate) hc_id int unsigned, s_address 255, s_phone 13, s_schedule 255
+insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values
+('gqarnoldo16@yopmail.com', 123, 'Boulevard Motrel No. 54, 22863, Campeche', '5356224735', '07:00-20:00'),
+('ghfarhat7@yopmail.com', 3214, 'Avenida Ochoa de Eribe No. 199, 62262, Oaxaca', '0402004591', '10:00-22:00'),
+('ioabelmartin14@yopmail.com', 1321, 'Orcero No. 38, 17378, Michoacán', '6566771374', '06:00-19:00'),
+('ioabelmartin14@yopmail.com', 5435, 'Cerrada Estalrich No. 952, 38865, Baja California Sur', '7475116727', '06:00-22:00'),
+('jfamaranatalia5@yopmail.com', 163, 'calle Santo de la Libertad No. 622, 72478, Yucatan', '8481112321', '11:00-23:30');
+
 -- inventories -> [FK(stores) s_id int unsigned ], FK(products) p_id int unsigned,
 -- i_quantity int unsigned not null
-insert into inventories (i_id, p_id, i_quantity) values
+insert into inventories (s_id, p_id, i_quantity) values
 (1,3,1),
 (2,2,3),
 (3,3,6),
@@ -589,14 +590,13 @@ insert into inventories (i_id, p_id, i_quantity) values
 (4,3,43),
 (3,5,2);
 
--- stores -> s_id auto_increment int, FK(store_admin) sa_email 13,
--- FK(heatl_certificate) hc_id int unsigned, s_address 255, s_phone 13, s_schedule 255
-insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values
-('gqarnoldo16@yopmail.com', 123, 'Boulevard Motrel No. 54, 22863, Campeche', '5356224735', '07:00-20:00'),
-('ghfarhat7@yopmail.com', 3214, 'Avenida Ochoa de Eribe No. 199, 62262, Oaxaca', '0402004591', '10:00-22:00'),
-('ioabelmartin14@yopmail.com', 1321, 'Orcero No. 38, 17378, Michoacán', '6566771374', '06:00-19:00'),
-('ioabelmartin14@yopmail.com', 5435, 'Cerrada Estalrich No. 952, 38865, Baja California Sur', '7475116727', '06:00-22:00'),
-('jfamaranatalia5@yopmail.com', 163, 'calle Santo de la Libertad No. 622, 72478, Yucatan', '8481112321', '11:00-23:30');
+-- orders -> o_id int auto_increment, FK(delivery_men) dm_email 255, o_date date, o_status tinyint, o_cost int, o_delivery_address 255.
+insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values
+('byhuerta24@yopmail.com', '2021-05-13', 1,  82, '19.330121932779146, -99.09453794371329'),
+('gvmorientes21@yopmail.com', '2021-05-13', 1,  295, '19.410152002799045, -99.16078231384483'),
+('erana17@yopmail.com', '2021-04-12', 1,  33, '19.431380537233316, -99.14279257400011'),
+('hahipolito0@yopmail.com', '2021-05-13', 1, 24, '19.409790799438497, -99.08688771059344'),
+('dktiburciofelipe10@yopmail.com', '2021-06-19', 0, 47, '25.71159589864659, -100.34888036333705');
 
 -- ordered_products -> FK(products) p_id int, FK(orders) o_id int, FK(stores) s_id int, op_quantity int.
 insert into ordered_products values
@@ -609,14 +609,6 @@ insert into ordered_products values
 (1, 4, 2, 1),
 (5, 5, 1, 1);
 
--- orders -> o_id int auto_increment, FK(delivery_men) dm_email 255, o_date date, o_status tinyint, o_cost int, o_delivery_address 255.
-insert into orders (dm_email, o_date, o_status, o_cost, o_delivery_address) values
-('byhuerta24@yopmail.com', '2021-05-13', 1,  82, '19.330121932779146, -99.09453794371329'),
-('gvmorientes21@yopmail.com', '2021-05-13', 1,  295, '19.410152002799045, -99.16078231384483'),
-('erana17@yopmail.com', '2021-04-12', 1,  33, '19.431380537233316, -99.14279257400011'),
-('hahipolito0@yopmail.com', '2021-05-13', 1, 24, '19.409790799438497, -99.08688771059344'),
-('dktiburciofelipe10@yopmail.com', '2021-06-19', 0, 47, '25.71159589864659, -100.34888036333705');
-
 -- shopping_carts -> FK(customers) c_email 255, FK(products) p_id uint, sc_addition_date date, sc_quantity uint,
 insert into shopping_carts values
 ('mrbuyer@mail.com', 1, '2021-05-15', 3),
@@ -627,11 +619,11 @@ insert into shopping_carts values
 
 -- orders_histories FK(customers) c_email 255, FK(orders) o_id uint.  
 insert into orders_histories values
-('byhuerta24@yopmail.com', 1),
-('gvmorientes21@yopmail.com', 2),
-('erana17@yopmail.com', 3),
-('hahipolito0@yopmail.com', 4),
-('dktiburciofelipe10@yopmail.com', 5);
+('mrbuyer@mail.com', 1),
+('mcqueenrayo@mail.com', 2),
+('licpugberto@mail.com', 3),
+('almonez@mail.com', 4),
+('ecbergon2@yopmail.com', 5);
 
 -- balance -> FK(delivery_men) dm_email 255, FK(orders) o_id uint, b_gain uint,
 insert into balance values
