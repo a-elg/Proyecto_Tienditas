@@ -16,7 +16,7 @@ const express = require("express");
 //const MySQL = require("./project/controller/db.js");
 const app = express();
 let connection_ready = false;
-const mysql = require("./project/controller/db.js");
+//const mysql = require("./project/controller/db.js");
 
 /*let con = mysql.createConnection({
     user: "root",
