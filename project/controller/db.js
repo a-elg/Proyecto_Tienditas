@@ -10,60 +10,162 @@ let connection = mysql.createConnection({
     database: `${process.env.mysql_db}`
 });
 
-function query(lit_query) {
-    try {
-        connection.connect((err) => {
-            if (err) throw err;
-            console.log("Sucesfully connected to server.");
-            connection.query(lit_query, (err, result) => {
-                if (err) throw err;
-                console.log(`Result:`);
-                console.log(result);
-                return
-            });
-        });
-    } catch (error) {
-        console.log("Error:");
-        console.log(error);
-    }
-}
-module.exports.query = query;
+ function query(lit_query) {
+    return new Promise(
+        (resolve,reject)=>{
+            try {
+                connection.connect((err) => {
+                    if (err) throw err;
+                    connection.query(lit_query, (err, result) => {
+                        if (err) throw err;
+                        resolve(result);
+                    });
+                });
+            } 
+            catch (error){ 
+                reject(error);
+            }
+        }
+    );
+}module.exports.query = query;
 
-// Save user________________________________________________________________________________________________________________
-function saveCustomer(email, name, phone, password) {
-    try {
-        connection.connect((err) => {
-            if (err) throw err;
-            connection.query(`call createCustomer('${email}','${name}','${phone}','${password}')`, (err, result) => {
-                if (err) throw err;
-                return result[0][0].created;
-            });
-        });
-    } catch (error) {
-        console.log("Error:");
-        console.log(error);
-    }
-}
-module.exports.saveCustomer = saveCustomer;
+// Save entities rows________________________________________________________________________________________________________________
 
-// Signin_____________________________________________________________________________________________
-function signinCustomer(email, password) {
-    try {
-        connection.connect((err) => {
-            if (err) throw err;
-            connection.query(`call signinCustomer('${email}','${password}')`, (err, result) => {
-                if (err) throw err;
-                return result[0][0].casesignin;
-            });
-        });
-    } catch (error) {
-        console.log("Error:");
-        console.log(error);
-        return 0;
-    }
+ async function saveCustomer(email, name, phone, password) {
+    await query(`call createCustomer
+        (
+            '${email}',
+            '${name}',
+            '${phone}',
+            '${password}'
+        )
+    `)
+    .then(
+        (result)=>{
+            console.log("Succesfull query\nResult:");
+            if(!result){
+                return false;
+            }
+            return true;
+        }
+    )
+    .catch(
+        (result)=>{
+            console.log("Error in query:");
+            console.log(result);
+            return false;
+        }
+    );
+
+}module.exports.saveCustomer = saveCustomer;
+
+
+async function saveProduct(name,price,brand,category,img_path,description){
+    if (brand===undefined)
+        brand=" ";
+    await query(`
+        insert into products(
+            p_name,
+            p_price,
+            p_brand,
+            p_category,
+            p_img_path,
+            p_description
+        ) 
+        values(
+            '${name}',
+            ${price},
+            '${brand}',
+            '${category}',
+            '${img_path}',
+            '${description}'
+        );
+    `)
+    .then(
+        (result)=>{
+            console.log("Succesfull query\nResult:");
+            if(!result){
+                return false;
+            }
+            return true;
+        }
+    )
+    .catch(
+        (result)=>{
+            console.log("Error in query:");
+            console.log(result);
+            return false;
+        }
+    );
+
+}module.exports.saveProduct = saveProduct;
+
+async function signinCustomer(email, password) {
+    let a;
+    await query(`call signinCustomer('${email}','${password}')`)
+    .then(
+        (result)=>{
+            console.log("Succesfull query");
+            if(!result){
+                a= false;
+            }
+            a= true;
+        }
+    )
+    .catch(
+        (result)=>{
+            a= false;
+        }
+    );
+    if(a)
+        a=await readCustomer(email);
+    else
+        a=null;
+    return a;
 }module.exports.signinCustomer = signinCustomer;
 
-function signinStore(email, password) {
+async function readCustomer(email) {
+    await query(`call readCustomer('${email}');`)
+    .then(
+        (result)=>{
+            console.log("Succesfull query");
+            if(!result){
+                return false;
+            }
+            console.log(result);
+            result=result[0][0];
+            return new users.Customer(result.c_email,result.c_name,result.c_password,"Customer",null,);
+        }
+    )
+    .catch(
+        (result)=>{
+            return false;
+        }
+    );
+}module.exports.readCustomer = readCustomer;
+
+async function getShoppingCart(email) {
+    let query_result = query(`select * from shopping_carts where c_mail=${email};`);
+}
+readCustomer("emmanuel@outlook.com");
+
+
+
+
+
+
+
+// Signin_____________________________________________________________________________________________
+
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------
+
+
+async function signinStore(email, password) {
     try {
         connection.connect((err) => {
             if (err) throw err;
@@ -79,7 +181,7 @@ function signinStore(email, password) {
     }
 }module.exports.signinStore = signinStore;
 
-function signinDelivery(email, password) {
+async function signinDelivery(email, password) {
     try {
         connection.connect((err) => {
             if (err) throw err;
@@ -95,7 +197,7 @@ function signinDelivery(email, password) {
     }
 }module.exports.signinDelivery = signinDelivery;
 
-function signinAdmin(email, password) {
+async function signinAdmin(email, password) {
     try {
         connection.connect((err) => {
             if (err) throw err;
@@ -112,32 +214,9 @@ function signinAdmin(email, password) {
 }module.exports.signinAdmin = signinAdmin;
 
 // Read____________________________________________________________________________________________
-function readCustomer(email) {
-    try {
-        connection.connect((err) => {
-            if (err) throw err;
-            connection.query(`call readCustomer('${email}')`, (err, result) => {
-                if (err) throw err;
-                let query_result = result[0][0];
-                let user = new users.Customer(
-                    query_result.c_email,
-                    query_result.c_name,
-                    query_result.c_password,
-                    "customer",
-                    null,
-                    null
-                );
-                return user;
-            });
-        });
-    } catch (error) {
-        console.log("Error:");
-        console.log(error);
-        return 0;
-    }
-}module.exports.readCustomer = readCustomer;
 
-function readDeliveryMan(email) {
+
+async function readDeliveryMan(email) {
     try {
         connection.connect((err) => {
             if (err) throw err;
@@ -163,62 +242,10 @@ function readDeliveryMan(email) {
         return 0;
     }
 }module.exports.readDeliveryMan = readDeliveryMan;
-
-
-console.log(query(`call readCustomer('correo2')`));
-
-
 // User operations_________________________________________________________________________________________________
 
-function getShoppingCart(email) {
-    let query_result = query(`select * from shopping_carts where c_mail=${email};`);
-}
 
 
-function createProduct(name,price,brand,category,img_path,description){
-    let query_result;
-    if (brand===undefined){
-        query_result=query(`insert into products
-            (
-                p_name,
-                p_price,
-                p_brand,
-                p_category,
-                p_img_path,
-                p_description
-            ) values 
-            (
-                '${name}',
-                 ${price},
-                '${brand}',
-                '${category}',
-                '${img_path}',
-                '${description}'
-            );
-        `);
-    }
-    else{
-        query_result=query(`insert into products
-            (
-                p_name,
-                p_price,
-                p_brand,
-                p_category,
-                p_img_path,
-                p_description
-            ) values 
-            (
-                '${name}',
-                 ${price},
-                '${brand}',
-                '${category}',
-                '${img_path}',
-                '${description}'
-            );
-        `);
-
-    }  
-}
 
 console.log("db.js correctly set");
 

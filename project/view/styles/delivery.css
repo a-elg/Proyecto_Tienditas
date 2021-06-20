@@ -1,0 +1,21 @@
+html,
+body {
+    overflow-x: hidden;
+    /* Prevent scroll on narrow devices */
+}
+
+main {
+    padding: 7ex 0;
+}
+
+.text-white-50 {
+    color: rgba(255, 255, 255, .5);
+}
+
+.bg-purple {
+    background-color: #4e2d07;
+}
+
+.pdrt {
+    padding-right: 3.5ex;
+}

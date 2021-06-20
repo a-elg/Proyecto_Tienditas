@@ -26,10 +26,10 @@ class User {
     get addr()  {return this.#addr }
     set addr(a) {this.#addr = a; }
 
-    login(name, pswd){
+    signin(name, pswd){
 
     }
-    signin(name, pswd, type, addr) {
+    signup(name, pswd, type, addr) {
 
     }
     read(id) {
