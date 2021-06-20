@@ -122,5 +122,5 @@ app.post("/catalog", (request, response) => {
 
 
 console.log(`Server up at localhost:${process.env.port}`);
-mysql.query(`call readCustomer('coorep')`);
+//mysql.query(`call readCustomer('coorep')`);
 //MySQL.query("call signinCustomer('correo2','contrass');");
