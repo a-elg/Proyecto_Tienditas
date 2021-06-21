@@ -23,6 +23,7 @@ function home(scrollc) {
         .then(response => response.json())
         .then(data => {
             products = products.concat(data);
+            console.log(products);
             let htmlstring = "";
             products.forEach(element => {
                 htmlstring += begins;

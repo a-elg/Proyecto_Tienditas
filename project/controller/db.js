@@ -12,8 +12,6 @@ const pool = mysql.createPool({
     database: `${process.env.mysql_db}`
 })
 
-
-
 function query(sql) {
     return new Promise(
         ( resolve, reject ) => {
@@ -35,8 +33,6 @@ function query(sql) {
     )
 }module.exports.query= query;
 
-
-
 async function getCatalog(scrolling_offset) {
     let inf_boud=scrolling_offset*25;
     let sup_boud=inf_boud+26;
@@ -50,10 +46,197 @@ async function getCatalog(scrolling_offset) {
     return result;
 }module.exports.getCatalog = getCatalog;
 
-   
+// Signin_____________________________________________
+async function signinCustomer(email, password) {
+    let a;
+    await query(`call signinCustomer('${email}','${password}')`)
+    .then(result=>a={name:result[0][0].name_sp,casesignin:result[0][0].casesignin})
+    .catch(result=>a=0);
+    return a;
+}module.exports.signinCustomer = signinCustomer;
+  
+async function signinStore(email, password) {
+    let a;
+    await query(`call signinStore('${email}','${password}')`)
+    .then(result=>a={name:result[0][0].name_sp,casesignin:result[0][0].casesignin})
+    .catch(result=>a=0);
+    return a;
+}module.exports.signinStore = signinStore;
+
+async function signinDelivery(email, password) {
+    let a;
+    await query(`call signinDelivery('${email}','${password}')`)
+    .then(result=>a={name:result[0][0].name_sp,casesignin:result[0][0].casesignin})
+    .catch(result=>a=0);
+    return a;
+}module.exports.signinDelivery = signinDelivery;
+
+async function signinAdmin(email, password) {
+    let a;
+    await query(`call signinAdmin('${email}','${password}')`)
+    .then(result=>a={name:result[0][0].name_sp,casesignin:result[0][0].casesignin})
+    .catch(result=>a=0);
+    return a;
+}module.exports.signinAdmin = signinAdmin;
+
+// Read______________________________________________
+async function readCustomer(email) {
+    let a;
+    await query(`call readCustomer('${email}')`)
+    .then(
+        async (result)=>{
+            if(result[0][0]==undefined) a=null;
+            else{
+                result=result[0][0];
+                await getShoppingCart(email)
+                .then(cart=>{
+                    a=new users.Customer(result.c_email,result.c_name,result.c_password,"customer",null,result.c_phone,cart)
+                })
+                .catch(result=>a=new users.Customer(result.c_email,result.c_name,result.c_password,"customer",null,result.c_phone,null))
+            }
+        }
+    ) 
+    .catch(result=>a=null);
+    return a;
+}module.exports.readCustomer = readCustomer;
+
+    async function getShoppingCart(email) {
+        let a=[];
+        await query(`
+            select
+                shopping_carts.p_id as "id",
+                products.p_name as "name",
+                products.p_price as "price",
+                shopping_carts.sc_quantity as "quantity",
+                products.p_brand as "brand",
+                products.p_category as "category",
+                products.p_img_path as "path",
+                products.p_description as "desc"
+            from shopping_carts 
+            left join products on shopping_carts.p_id = products.p_id
+            where shopping_carts.c_email="${email}";
+        `)
+        .then(
+            (result)=>{
+                result.forEach(
+                    (element)=>{
+                        a.push(
+                            new products.Stock(
+                                element.id,
+                                element.name,
+                                element.brand,
+                                element.category,
+                                element.price,
+                                element.desc,
+                                element.path,
+                                element.quantity
+                            )
+                        )
+                    }
+                );
+            }
+        )
+        .catch(
+            (result)=>{
+                a=null;
+            }
+        );
+        return a;
+    }module.exports.getShoppingCart=getShoppingCart;
+
+
+
+///Terminadas ↑↑↑↑↑↑↑↑↑
+//Por terminar ↓↓↓↓↓↓↓↓
+async function readDeliveryMan(email) {
+    let a;
+    await query(`call readDeliveryMan('${email}')`)
+    .then(
+        async (result)=>{
+            result=result[0][0];
+            let historial;
+            let balance;
+            a=new users.DeliveryMan(result.dm_email,result.dm_name,result.dm_password,"delivery_man",null,result.dm_phone,historial,balance);
+            console.log(result);
+        }
+    )
+    .catch(result=>a=null);
+    return a;
+}module.exports.readDeliveryMan = readDeliveryMan;
+
+async function getHistorial(email,user){
+    let a;
+    switch(user.toLowerCase){
+        case "c":
+        case "customer":
+            await query(`
+                select
+                    orders_histories.c_email as "customer",
+                    orders.dm_email as "deliveryman",
+                    orders.o_date as "date",
+                    orders.o_status as "status",
+                    orders.o_cost as "cost",
+                orders.o_delivery_address as "address"
+                from orders_histories 
+                left join orders on orders_histories.o_id = orders.o_id
+                where orders_histories.c_email="${email}";
+            `)
+            .then(
+                result=>{
+                    a=result;
+                }
+            )
+            .catch(result=>a=null);
+            break;
+        case "dm":
+        case "deliveryman":
+        case "deliverymen":
+        case "delivery_man":
+        case "delivery_men":
+            await query(`
+                select
+                    orders_histories.c_email as "customer",
+                    orders.dm_email as "deliveryman",
+                    orders.o_date as "date",
+                    orders.o_status as "status",
+                    orders.o_cost as "cost",
+                    orders.o_delivery_address as "address"
+            
+                from orders_histories 
+                left join orders on orders_histories.o_id = orders.o_id
+                where orders.dm_email="${email}";`)
+            .then(
+                result=>{
+                    a=result;
+                }
+            )
+            .catch(result=>a=null);
+            break;
+
+        case "s":
+        case "store":
+        case "sa":
+        case "store_admin":
+        case "storeadmin":
+            
+            break;
+    }
+    return a;
+}module.exports.getHistorial=getHistorial;
+/*
+select
+    stores.hc_id as "HC_tienda",
+    store_admin.sa_rfc as "RFC_admin"
+from stores 
+left join store_admin<-.ñ
+´}+{} on shopping_carts.p_id = products.p_id
+where orders.dm_email="${email}";
+*/
+
 // Save entities rows________________________________________________________________________________________________________________
 
 async function createCustomer(email, name, phone, password) {
+    let a;
     await query(`call createCustomer
         (
             '${email}',
@@ -66,21 +249,21 @@ async function createCustomer(email, name, phone, password) {
         (result)=>{
             console.log("Succesfull query\nResult:");
             if(!result){
-                return false;
+                a= false;
             }
-            return true;
+            a= (result[0][0].created)? true:false;
         }
     )
     .catch(
         (result)=>{
             console.log("Error in query:");
             console.log(result);
-            return false;
+            a= false;
         }
     );
+    return a;
 
 }module.exports.createCustomer = createCustomer;
-
 
 async function saveProduct(name,price,brand,category,img_path,description){
     if (brand===undefined)
@@ -122,166 +305,9 @@ async function saveProduct(name,price,brand,category,img_path,description){
 
 }module.exports.saveProduct = saveProduct;
 
-async function signinCustomer(email, password) {
-    let a;
-    await query(`call signinCustomer('${email}','${password}')`)
-    .then(
-        (result)=>{
-            console.log("Succesfull query");
-            if(!result){
-                a= false;
-            }
-            a= true;
-        }
-    )
-    .catch(
-        (result)=>{
-            a= false;
-        }
-    );
-
-    return a;
-}module.exports.signinCustomer = signinCustomer;
-
-
-
-async function readCustomer(email) {
-    await query(`call readCustomer('${email}');`)
-    .then(
-        (result)=>{
-            console.log("Succesfull query");
-            if(!result){
-                return false;
-            }
-            console.log(result);
-            result=result[0][0];
-            return new users.Customer(result.c_email,result.c_name,result.c_password,"Customer",null,);
-        }
-    )
-    .catch(
-        (result)=>{
-            return false;
-        }
-    );
-}module.exports.readCustomer = readCustomer;
-
-async function getShoppingCart(email) {
-    await query(`select * from shopping_carts where c_email='${email}';`)
-    .then(
-        (result)=>{
-            console.log("Succesfull query");
-            if(!result){
-                return false;
-            }
-            console.log(result);
-            result=result[0][0];
-            return true;
-        }
-    )
-    .catch(
-        (result)=>{
-            return false;
-        }
-    );
-}
-
-//saveProduct("Gomitas",12,"Ricolino","Dulces","https://www.superama.com.mx/Content/images/products/img_large/0750303037408L.jpg","Gomitas bañadas en azucar 63gr");
-
-//getShoppingCart("emmanuel@outlook.com");
-
-
-
-
-
-
-
-// Signin_____________________________________________________________________________________________
-
-
-//----------------------------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------------------------
-
-
-async function signinStore(email, password) {
-    try {
-        connection.connect((err) => {
-            if (err) throw err;
-            connection.query(`call signinStore('${email}','${password}')`, (err, result) => {
-                if (err) throw err;
-                return result[0][0].casesignin;
-            });
-        });
-    } catch (error) {
-        console.log("Error:");
-        console.log(error);
-        return 0;
-    }
-}module.exports.signinStore = signinStore;
-
-async function signinDelivery(email, password) {
-    try {
-        connection.connect((err) => {
-            if (err) throw err;
-            connection.query(`call signinDelivery('${email}','${password}')`, (err, result) => {
-                if (err) throw err;
-                return result[0][0].casesignin;
-            });
-        });
-    } catch (error) {
-        console.log("Error:");
-        console.log(error);
-        return 0;
-    }
-}module.exports.signinDelivery = signinDelivery;
-
-async function signinAdmin(email, password) {
-    try {
-        connection.connect((err) => {
-            if (err) throw err;
-            connection.query(`call signinAdmin('${email}','${password}')`, (err, result) => {
-                if (err) throw err;
-                return result[0][0].casesignin;
-            });
-        });
-    } catch (error) {
-        console.log("Error:");
-        console.log(error);
-        return 0;
-    }
-}module.exports.signinAdmin = signinAdmin;
-
 // Read____________________________________________________________________________________________
 
 
-async function readDeliveryMan(email) {
-    try {
-        connection.connect((err) => {
-            if (err) throw err;
-            connection.query(`call readDeliveryMan('${email}')`, (err, result) => {
-                if (err) throw err;
-                let query_result = result[0][0];
-                let user = new users.Customer(
-                    query_result.dm_email,
-                    query_result.dm_name,
-                    query_result.dm_phone,
-                    query_result.dm_rfc,
-                    query_result.dm_password,
-                    "delivery_men",
-                    null,
-                    null
-                );
-                return user;
-            });
-        });
-    } catch (error) {
-        console.log("Error:");
-        console.log(error);
-        return 0;
-    }
-}module.exports.readDeliveryMan = readDeliveryMan;
 // User operations_________________________________________________________________________________________________
 
 
@@ -322,14 +348,7 @@ Quieries de consulta:
 */
 
 /**
- * Catálodo
- * Arreglo de productos
  * 
- * Para cada signin
- * nombre 
- * 
- * Consultar carrito
- * arreglo obj_prod-candidad
  * 
  * Añadir product a carrito
  * sobreescribit

@@ -8,11 +8,12 @@
  * Sign in/ sing up de Customer
  * Discutir lo del Stock
  * 
- */
+ */ 
 
 require("dotenv").config();
 const fs = require("fs");
 const express = require("express");
+const session = require('express-session');
 const MySQL = require("./project/controller/db.js");
 const app = express();
 let connection_ready = false;
@@ -20,6 +21,12 @@ let connection_ready = false;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./project/view"));
+app.use(session({
+  secret: 'akisessionjsjs',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 app.listen(process.env.port);
 
 //Customer_______________________________________________________________
@@ -81,6 +88,7 @@ app.post("/asignup", (request, response) => {
 
 app.post("/asignin", (request, response) => {
     console.log(request.body);
+    response.redirect("/stores.html");
     response.end();
 });
 
@@ -88,31 +96,56 @@ app.post("/asignin", (request, response) => {
 app.post("/catalog", async (request, response) => {
   let catalogJSON = [];
   response.contentType("application/json");
-    if (request.headers.referer.includes(`http://${process.env.domain}/home.html`) || request.headers.referer.includes("http://127.0.0.1:5000/home.html")) {
-      console.log(request.body);
-      if(request.body.count != undefined || !isNaN(Number(request.body.count))){
-        catalogJSON = await MySQL.getCatalog(request.body.count);
-      }
-      //catalogJSON = '[{"sku": 1, "name":"Awa del bicho", "brand": "Bicho", "price":20.0, "desc": "Coca cola no, awa como el bicho", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}, {"sku": 2, "name":"Awa del bicho 2", "brand": "Bicho", "price":25.0, "desc": "Coca cola no, awa como el bicho 2", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}]';
+  if (request.headers.referer.includes(`http://${process.env.domain}/home.html`) || request.headers.referer.includes("http://127.0.0.1:5000/home.html")) {
+    console.log(request.body);
+    if(request.body.count != undefined || !isNaN(Number(request.body.count))){
+      catalogJSON = await MySQL.getCatalog(request.body.count);
     }
-    else {
-      response.send(catalogJSON);
-      response.end();
-    }
+    //catalogJSON = '[{"sku": 1, "name":"Awa del bicho", "brand": "Bicho", "price":20.0, "desc": "Coca cola no, awa como el bicho", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}, {"sku": 2, "name":"Awa del bicho 2", "brand": "Bicho", "price":25.0, "desc": "Coca cola no, awa como el bicho 2", "img_path": "https://i0.wp.com/noticieros.televisa.com/wp-content/uploads/2021/06/memes-ronaldo-coca-2.png?resize=550%2C559&ssl=1"}]';
+  } else response.redirect('/oops.html');
+  response.send(catalogJSON);
+  response.end();
 });
 
-//Error handling____________________________________________________________
+app.post("/session", (request, response) => {
+  console.log(request.session);
+  response.contentType("application/json");
+  email = {u_email: ""};
+  if(request.session.u_email) email = {u_email: request.session.u_email};
+  response.send(email);
+  response.end();
+});
 
+app.post("/psswdrcvr", async (request, response) => {
+  
+});
+
+
+
+//__________________________________________________________________________
 app.get("/test",async (req,res)=>{
+  console.log("Beggining test");
   res.write("Prueba");
   console.log("->");
-  let a;
-  await MySQL.query("select * from products;").then((res)=>{a=res; console.log("A asignada");})
-  console.log("<-");
-  console.log(a);
+  let Test_res;
+  await MySQL.getHistorial("almonez@mail.com","c").then((res)=>{Test_res=res; console.log("A asignada");})
+  console.log("<-\nTest_res:");
+  console.log(Test_res);
   res.end();
+  console.log("End of test");
   //insert into products (p_name, p_price,p_brand,p_category,p_img_path,p_description) values ('Awa de owo',15,'UwUntu','Awuitas locas','https://res.cloudinary.com/walmart-labmg_large/00750105923677L.jpg','Una rica awita de owo... uwu');
 });
+
 console.log(`Server up at localhost:${process.env.port}`);
 //mysql.query(`call readCustomer('coorep')`);
 //MySQL.query("call signinCustomer('correo2','contrass');");
+
+//Error handling____________________________________________________________
+
+app.get("*",(request, response) => {
+  console.log(`Error 404`);
+  response.redirect("/notFound.html");
+  response.end();
+});
+
+

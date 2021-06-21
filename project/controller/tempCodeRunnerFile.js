@@ -1,1 +1,1 @@
-    console.log(new String(1));
+console.log(null===null);

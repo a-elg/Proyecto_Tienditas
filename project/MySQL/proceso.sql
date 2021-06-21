@@ -565,8 +565,8 @@ insert into stores (sa_email, hc_id, s_address, s_phone, s_schedule) values
 ('gqarnoldo16@yopmail.com', 123, 'Boulevard Motrel No. 54, 22863, Campeche', '5356224735', '07:00-20:00'),
 ('ghfarhat7@yopmail.com', 3214, 'Avenida Ochoa de Eribe No. 199, 62262, Oaxaca', '0402004591', '10:00-22:00'),
 ('ioabelmartin14@yopmail.com', 1321, 'Orcero No. 38, 17378, Michoacán', '6566771374', '06:00-19:00'),
-('ioabelmartin14@yopmail.com', 5435, 'Cerrada Estalrich No. 952, 38865, Baja California Sur', '7475116727', '06:00-22:00'),
-('jfamaranatalia5@yopmail.com', 163, 'calle Santo de la Libertad No. 622, 72478, Yucatan', '8481112321', '11:00-23:30');
+('jfamaranatalia5@yopmail.com', 5435, 'Cerrada Estalrich No. 952, 38865, Baja California Sur', '7475116727', '06:00-22:00'),
+('bnasuncion13@yopmail.com', 163, 'calle Santo de la Libertad No. 622, 72478, Yucatan', '8481112321', '11:00-23:30');
 
 -- inventories -> [FK(stores) s_id int unsigned ], FK(products) p_id int unsigned,
 -- i_quantity int unsigned not null
