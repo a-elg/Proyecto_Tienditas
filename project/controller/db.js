@@ -179,7 +179,8 @@ async function getHistorial(email, user) {
                         );
                     }
                 )
-                .catch(result => a = null);
+                .catch(result => { a = null;
+                    console.log(result); });
             break;
         case "dm":
         case "deliveryman":
@@ -209,7 +210,8 @@ async function getHistorial(email, user) {
                         );
                     }
                 )
-                .catch(result => a = null);
+                .catch(result => { a = null;
+                    console.log(result); });
             break;
 
         case "s":
@@ -240,7 +242,8 @@ async function getHistorial(email, user) {
                         );
                     }
                 )
-                .catch(result => a = null);
+                .catch(result => { a = null;
+                    console.log(result); });
             break;
     }
     return a;
@@ -260,14 +263,15 @@ async function readDeliveryMan(email) {
                         result_1 => {
                             historial = result_1;
                             result_1.forEach(element => balance += element.cost);
+                            a = new users.DeliveryMan(result.dm_email, result.dm_name, result.dm_password, "delivery_man", null, result.dm_phone, historial, balance, result.dm_rfc);
                         }
                     )
-                    .catch(result_1 => a = null);
-                a = new users.DeliveryMan(result.dm_email, result.dm_name, result.dm_password, "delivery_man", null, result.dm_phone, historial, balance);
-                console.log(result);
+                    .catch(result_1 => { a = null;
+                        console.log("error in get historial"); });
             }
         )
-        .catch(result => a = null);
+        .catch(result => { a = null;
+            console.log("error in query"); });
     return a;
 }
 module.exports.readDeliveryMan = readDeliveryMan;

@@ -3,7 +3,6 @@
  * API imgdb
  * Mantener sesión iniciada para usuarios
  * Alaterar base de datos para la API
- * 
  */
 
 require("dotenv").config();
@@ -21,7 +20,7 @@ app.use(session({
     secret: 'akisessionjsjs',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true }
+    cookie: { secure: true, maxAge: 300000 }
 }));
 app.listen(process.env.port);
 
@@ -51,6 +50,7 @@ app.post("/signin", async(request, response) => {
         let signin = await MySQL.signinCustomer(request.body.email, request.body.password);
         data.u_name = signin.name;
         data.case = signin.casesignin;
+        request.session.u_email = request.body.email;
         response.status(200);
         response.send(data);
     }
@@ -67,12 +67,24 @@ app.post("/ssignup", (request, response) => {
 });
 
 app.post("/ssignin", (request, response) => {
-    console.log(request.body);
+    let data = { u_name: "", case: 0 };
+    response.contentType("application/json");
+    if (request.body.email == "" ||  request.body.password == "") {
+        response.status(400);
+        response.send(data);
+    } else {
+        let signin = await MySQL.signinStore(request.body.email, request.body.password);
+        data.u_name = signin.name;
+        data.case = signin.casesignin;
+        request.session.u_email = request.body.email;
+        response.status(200);
+        response.send(data);
+    }
     response.end();
 });
 
 //Deliverer________________________________________________________________
-app.post("/dsignup", (request, response) => {
+app.post("/dmsignup", (request, response) => {
     let info = request.body;
     console.log(info);
     if (info.password !== info.vpassword)
@@ -81,12 +93,22 @@ app.post("/dsignup", (request, response) => {
     response.end();
 });
 
-app.post("/dsignin", (request, response) => {
-    let info = request.body;
-
+app.post("/dmsignin", async(request, response) => {
+    let data = { u_name: "", case: 0 };
+    response.contentType("application/json");
+    if (request.body.email == "" ||  request.body.password == "") {
+        response.status(400);
+        response.send(data);
+    } else {
+        let signin = await MySQL.signinDelivery(request.body.email, request.body.password);
+        data.u_name = signin.name;
+        data.case = signin.casesignin;
+        request.session.u_email = request.body.email;
+        response.status(200);
+        response.send(data);
+    }
     response.end();
 });
-
 
 //Admin____________________________________________________________________
 app.post("/asignup", (request, response) => {
@@ -115,6 +137,45 @@ app.post("/catalog", async(request, response) => {
     response.end();
 });
 
+app.post("/readDM", async(request, response) => {
+    response.contentType("application/json");
+    let data = { id: 0 },
+        dm;
+    if (request.body.u_email && request.body.u_email != "") {
+        dm = await MySQL.readDeliveryMan(request.body.u_email);
+        data.id = dm.id;
+        data.balance = dm.balance;
+    }
+    response.send(data);
+    response.end();
+});
+
+app.post("/readDMe", async(request, response) => {
+    response.contentType("application/json");
+    let data = { id: 0 },
+        dm;
+    if (request.body.u_email && request.body.u_email != "") {
+        dm = await MySQL.readDeliveryMan(request.body.u_email);
+        data.id = dm.id;
+        data.balance = dm.balance;
+    }
+    response.send(data);
+    response.end();
+});
+
+app.post("/readDMh", async(request, response) => {
+    response.contentType("application/json");
+    let data = { id: 0 },
+        dm;
+    if (request.body.u_email && request.body.u_email != "") {
+        dm = await MySQL.readDeliveryMan(request.body.u_email);
+        data.id = dm.id;
+        data.history = dm.history;
+    }
+    response.send(data);
+    response.end();
+});
+
 app.post("/session", (request, response) => {
     console.log(request.session);
     response.contentType("application/json");
@@ -128,24 +189,18 @@ app.post("/psswdrcvr", async(request, response) => {
 
 });
 
-
-
 //__________________________________________________________________________
 app.get("/test", async(req, res) => {
     console.log("Beggining test");
     res.write("Prueba");
     console.log("->");
     let Test_res;
-    await MySQL.createProduct("Awa de owo", 69, "Uwuntu", "Cosas lindas", "https://pbs.twimg.com/profile_images/1371949362675380231/NZgSFoMG_400x400.jpg", "Rica awa de owo con sabor a uwu", 1, "ioabelmartin14@yopmail.com").then(
-            (res) => {
-                Test_res = res;
-                console.log("A asignada");
-            })
-        /* 
-        "gqarnoldo16@yopmail.com","s"
-        "byhuerta24@yopmail.com", "dm"
-        "mrbuyer@mail.com", "c"
-        */
+    await MySQL.readDeliveryMan("erana17@yopmail.com").then(
+        (res) => {
+            Test_res = res;
+            console.log("A asignada");
+        }
+    )
     console.log("<-\nTest_res:");
     console.log(Test_res);
     res.end();
@@ -161,5 +216,10 @@ console.log(`Server up at localhost:${process.env.port}`);
 
 app.get("*", (request, response) => {
     response.status(404).redirect("/notFound.html");
+    response.end();
+});
+
+app.post("*", (request, response) => {
+    response.status(500).redirect("/oops.html");
     response.end();
 });

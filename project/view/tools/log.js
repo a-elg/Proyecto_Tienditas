@@ -6,7 +6,7 @@ function load() {
         event.preventDefault();
         event.stopPropagation();
         let req = { email: "", password: "" },
-            next = "";
+            next = "/home.html";
         let entry;
         for (let i = 0; i < form.length; i++) {
             entry = form[i];
@@ -18,11 +18,8 @@ function load() {
                 return false;
             }
         }
-        console.log(form.action);
-        if (form.action == "signin") next = "/home.html";
-        if (form.action == "dmsignin") next = "/delivery.html";
-        if (form.action == "ssignin") next = "/store.html";
-        console.log(next);
+        if (form.action.includes("dmsignin")) next = "/delivery.html";
+        if (form.action.includes("ssignin")) next = "/store.html";
         fetch(`${form.action}`, {
                 method: 'POST',
                 headers: new Headers({
@@ -42,6 +39,7 @@ function load() {
                 if (data)
                     if (data.u_name != "" && (data.case == 1 || data.case == 2)) {
                         sessionStorage.setItem("u_name", data.u_name);
+                        sessionStorage.setItem("u_email", req.email);
                         let notify;
                         if (data.case == 1) {
                             notify = alertify.alert('Aki', `Bienvenido ${data.u_name}`, function() {
