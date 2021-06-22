@@ -8,15 +8,19 @@
     <meta name="author" content="SICJ, CHG, AELG, JJSE">
     <link href="styles//bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="styles/signin.css" rel="stylesheet">
-    <link rel = "icon" href="images/logoblanco.png" type="image/png">
+    <link rel="icon" href="images/logoblanco.png" type="image/png">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="tools/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="tools/log.js"></script>
     <title>Inicia sesión en Aki</title>
 </head>
 
 <body class="text-center">
 
     <main class="form-signin">
-        <form method="POST" action="signin">
+        <form method="POST" action="signin" id="signin" enctype="multipart/form-data">
             <img class="mb-4" src="images/logoblanco.png" alt="" width="72" height="72" style="filter: invert(1);">
             <h1 class="h3 mb-3 fw-normal">Inicia sesión en Aki</h1>
             <h7 class="h7 mb-3 fw-normal">Introduce tu correo electrónico y contraseña para acceder.</h7><br/><br/>
@@ -25,12 +29,12 @@
                 <label for="floatingInput">Correo electrónico</label>
             </div>
             <div class="form-floating">
-                <input type="password" name ="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
                 <label for="floatingPassword">Contraseña</label>
             </div>
             <div class="mb-3">
                 <label>
-                    <p><a class="text-black" href="">Olvidé mi contraseña</a></p>
+                    <p><a class="text-black" href="psswdrcvr.html">Olvidé mi contraseña</a></p>
                 </label>
             </div>
             <div class="checkbox mb-3">
@@ -40,8 +44,7 @@
             </div>
             <button class="w-100 btn btn-lg btn-primary" type="submit">Acceder</button>
             <p class="mt-5 mb-3 text-muted">
-                Consulta nuestros <a href="" class="text-black">Términos y Condiciones de Uso</a>
-                y nuestro <a href="" class="text-black">Aviso de Privacidad</a>.
+                Consulta nuestros <a href="" class="text-black">Términos y Condiciones de Uso</a> y nuestro <a href="" class="text-black">Aviso de Privacidad</a>.
             </p>
         </form>
     </main>

@@ -9,6 +9,9 @@
     <link href="styles//bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="styles/signup.css" rel="stylesheet">
     <link rel = "icon" href="images/logoblanco.png" type="image/png">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script src="tools/bootstrap/bootstrap.bundle.min.js"></script>
     <script src = "tools/sign.js"></script>
     <title>Regístrate en Aki</title>
@@ -28,6 +31,10 @@
             <div class="form-floating">
                 <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                 <label for="floatingInput">Correo electrónico</label>
+            </div>
+            <div class="form-floating">
+                <input type="tel" name="tel" class="form-control" id="floatingInputt" placeholder="Name" required>
+                <label for="floatingInputt">Número de teléfono</label>
             </div>
             <div class="form-floating">
                 <input type="password" name ="password" class="form-control" id="floatingPassword" placeholder="Password" required>
