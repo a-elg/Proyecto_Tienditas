@@ -66,7 +66,7 @@ app.post("/ssignup", (request, response) => {
     response.end();
 });
 
-app.post("/ssignin", (request, response) => {
+app.post("/ssignin", async(request, response) => {
     let data = { u_name: "", case: 0 };
     response.contentType("application/json");
     if (request.body.email == "" ||  request.body.password == "") {

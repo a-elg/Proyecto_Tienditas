@@ -9,6 +9,7 @@ window.addEventListener('load', () => {
     getSession();
     home(0);
     document.getElementById("more").addEventListener("click", () => home(++scrollcount));
+    document.getElementById("endsess").addEventListener("click", () => endSession());
 });
 
 function home(scrollc) {
@@ -18,7 +19,7 @@ function home(scrollc) {
             headers: new Headers({
                 "Content-Type": "application/json"
             }),
-            body: JSON.stringify({ c_email: "lobitoveloz777@gmail.com", count: scrollc}),
+            body: JSON.stringify({ c_email: "lobitoveloz777@gmail.com", count: scrollc }),
             cache: 'no-cache'
         })
         .then(response => response.json())
@@ -44,7 +45,16 @@ function home(scrollc) {
 
 function getSession() {
     let name = sessionStorage.getItem("u_name");
-    if(name) {
+    if (name && name != "") {
         document.getElementById("sessionfalse").style.display = "none";
+        document.getElementById("u_nav").style.display = "block";
+        document.getElementById("displayname").innerHTML = name;
+        console.log(document.getElementById("displayname"));
     }
+}
+
+function endSession() {
+    sessionStorage.removeItem("u_name");
+    document.getElementById("sessionfalse").style.display = "block";
+    document.getElementById("u_nav").style.display = "none";
 }
