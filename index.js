@@ -4,7 +4,7 @@
  * Mantener sesión iniciada para usuarios
  * Alaterar base de datos para la API
  */
-// funiculiFuniculaaaaa
+
 require("dotenv").config();
 const fs = require("fs");
 const express = require("express");
